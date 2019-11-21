@@ -327,7 +327,7 @@ TF-IDF weighting scheme is broadly used for document and text classification, in
 
 We calculate the TF-IDF scores for all unigrams in the training corpus. The number of features equals the size of the vocabulary of the dataset and represents the dimensionality of the document vector. It is extremely sparse, since the documents contains about 20-30 words. So, our task is to reduce the dimensionality of the vector. 
 
-We use the Information Gain method for feature selection, which is a term from information theory \cite{Cover:2006:EIT:1146355}. In machine learning, this measure provides a way to calculate the mutual information between the features and the classification classes. According to \cite{Aggarwal12}, mutual information “is defined on the basis of the level of co-occurrence between the class and word”. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. It is a filter method that selects features by ranking them with correlation coefficients \cite{guyon03}. The information gain scores show how common is the feature in a target class, for example the words that occurs mainly in tweets labelled as FAVOR stance and almost never in AGAINST stance, are very informative and ranked highly. All the weights are normalized and all the features ranked from one to zero. We then select those features that are scored larger than zero.
+We use the Information Gain method for feature selection, which is a term from information theory \cite{Cover:2006:EIT:1146355}. In machine learning, this measure provides a way to calculate the mutual information between the features and the classification classes. According to \cite{Aggarwal12}, mutual information defined on the basis of the level of co-occurrence between the class and word. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. It is a filter method that selects features by ranking them with correlation coefficients \cite{guyon03}. The information gain scores show how common is the feature in a target class, for example the words that occurs mainly in tweets labelled as FAVOR stance and almost never in AGAINST stance, are very informative and ranked highly. All the weights are normalized and all the features ranked from one to zero. We then select those features that are scored larger than zero.
 
 We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem. 
 
@@ -411,11 +411,10 @@ language resources, the following steps need to be performed:
 \end{itemize}
 
 % \nocite{*}
-\section{Bibliographical References}
-\label{main:ref}
+\section{Bibliographical References}\label{main:ref}
 
 \bibliographystyle{lrec}
-\bibliography{reference.bib}
+\bibliography{bibliography,reference}
 
 
 %\section{Language Resource References}
