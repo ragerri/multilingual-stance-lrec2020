@@ -6,23 +6,21 @@
 \usepackage{tabularx}
 \usepackage{soul}
 % for eps graphics
-
 \usepackage{epstopdf}
 \usepackage[latin1]{inputenc}
-
 \usepackage{hyperref}
 \usepackage{xstring}
-
+\usepackage{todonotes}
 \newcommand{\secref}[1]{\StrSubstitute{\getrefnumber{#1}}{.}{ }}
 
 \title{Multilingual Stance Detection}
 
-\name{Elena Zotova, Rodrigo Agerri, Manuel Nu\~nez, German Rigau}
+\name{Elena Zotova$^*$, Rodrigo Agerri$^*$, Manuel Nu\~nez, German Rigau$^*$}
 
-\address{Affiliation1, Affiliation2, Affiliation3 \\
-         IXA NLP Group, University of the Basque Country UPV/EHU, Address2, Address3 \\
-         ezotova001@ikasle.ehu.eus, author2@zzz.edu, author3@hhh.com\\
-         \{author1, author5, author9\}@abc.org\\}
+\address{$^*$ IXA Group, HiTZ Centre, University of the Basque Country UPV/EHU, Donostia-San Sebasti\'an, Spain\\
+Empresa\\
+ezotova001@ikasle.ehu.eus, rodrigo.agerri@ehu.eus, author3@hhh.com
+german.rigau@ehu.eus}
 
 
 \abstract{
@@ -34,7 +32,16 @@ This paper presents a dataset for stance detection on Twitter in Catalan and Spa
 
 \section{Introduction}
 
-Automatic stance detection is the task of classifying the attitude expressed in a text towards a given target. Nowadays, it is a rapidly growing area of natural language processing since more and more opinion-rich textual resources such as online review sites, personal blogs and social media are available. The research on this topic is conducted mainly on the datasets in English \cite{mohammad-etal-2016-semeval,augenstein-etal-2016-stance}, and there is still a lack of textual resources and cross-lingual automatic systems for processing data in another languages. In this paper, we present a new dataset in Spanish and Catalan languages, explain our approach in collecting data and building automatic stance detecting systems. We also 
+Automatic stance detection is the task of classifying the attitude expressed in a text towards a given target. Nowadays, it is a rapidly growing area of natural language processing since more and more opinion-rich textual resources such as online review sites, personal blogs and social media are available. The research on this topic is conducted mainly on the datasets in English \cite{mohammad-etal-2016-semeval,augenstein-etal-2016-stance}, and there is still a lack of textual resources and cross-lingual automatic systems for processing data in another languages. 
+
+\todo[inline]{It will be nice to have here a first example of stance detection in Twitter.}
+
+Our main aim is to build robust multilingual stance detection system using machine learning techniques. The process of system building requires well developed and balanced datasets. We started with the experiments with existing dataset in Spanish and Catalan \cite{taule18} and one of the problems we met was unbalanced training data which caused impossibility of detecting stance in short texts. In order to solve the problem, we build  
+
+In this paper, we present a new dataset in Spanish and Catalan languages, explain our approach in collecting data and building automatic stance detecting systems. We also 
+
+\todo[inline]{Enumerate the contributions of this paper: New dataset to work on multilingual stance detection, also to explore cross-lingual approaches in the future. New methodology of annotating a dataset consisting of tweets, state-of-the-art results on a existing benchmark. Finally we contribute both the code and the dataset to facilitate reproducibility of results future research on multilingual stance detection.}
+
 
 \section{Related Work}
 
@@ -42,9 +49,9 @@ First of all, stance detection can be viewed as a subtask of Opinion Mining bein
 
 Research on Twitter posts started in 2014, and presented a new challenge to the NLP community since tweets are short, informal, full of misspellings, shortenings, slang and emoticons, and are produced in large amount with great velocity. Researchers \cite{DBLP:journals/corr/RajadesinganL14} were the first who determined stance at user level. They assumed that if many users retweet a particular pair of tweets in a short time, then this is likely that this pair of tweets had something in common and share the same opinion on the topic. 
 
-The first Stance Detection in Tweets task\footnote{http://alt.qcri.org/semeval2016/task6/} was presented in 2016 as a part of SemEval challenge organized by the National Research Council Canada. The task aimed to detect stance from single tweets, without taking into account conversational structure of online debates and information about authors. The SemEval 2016 competition included two subtasks. Task A was formulated as follows: "given a tweet text and a target entity (person, organization, movement, policy, etc.), automatic natural language systems must determine whether the tweeter is in favor of the given target, against the given target, or whether neither inference is likely"  \cite{mohammad-etal-2016-semeval}. In Task B the goal was to detect stance in relation of unseen target. The baseline system designed for the challenge built by the organizers obtained the best results. The features used in the system were the following: word and character n-grams, average word embeddings, and sentiment features. A supervised system was trained using a support vector machine classifier \cite{mohammad-etal-2016-semeval}. Other approaches were based on convolutional neural networks (CNN) \cite{wei16, VijayaraghavanS16}, recurrent neural network (RNN) \cite{DBLP:journals/corr/ZarrellaM16}, ensemble model \cite{Liu16}, maximum entropy classifier and domain dictionaries \cite{krejzl-steinberger-2016-uwb}, etc. Most of the participants used standard text classification features such as word and sentence vector embeddings and n-grams. 
+The first Stance Detection in Tweets task\footnote{http://alt.qcri.org/semeval2016/task6/} was presented in 2016 as a part of SemEval challenge organized by the National Research Council Canada. The task aimed to detect stance from single tweets, without taking into account conversational structure of online debates and information about authors. The SemEval 2016 competition included two subtasks. Task A was formulated as follows: "given a tweet text and a target entity (person, organization, movement, policy, etc.), automatic natural language systems must determine whether the tweeter is in favor of the given target, against the given target, or whether neither inference is likely"  \cite{mohammad-etal-2016-semeval}. In Task B the goal was to detect stance in relation of unseen target. The baseline system designed for the challenge built by the organizers obtained the best results. The features used in the system were the following: word and character n-grams, average word embeddings, and sentiment features. A supervised system was trained using a support vector machine classifier \cite{mohammad-etal-2016-semeval}. Other approaches were based on convolutional neural networks (CNN) \cite{wei16,VijayaraghavanS16}, recurrent neural network (RNN) \cite{DBLP:journals/corr/ZarrellaM16}, ensemble model \cite{Liu16}, maximum entropy classifier and domain dictionaries \cite{krejzl-steinberger-2016-uwb}, etc. Most of the participants used standard text classification features such as word and sentence vector embeddings and n-grams. 
 
-We should note that all mentioned works were implemented on the English dataset. The first challenge in stance detection in Spanish and Catalan languages was carried out in IberEval 2017\footnote{http://nlp.uned.es/IberEval-2017/index.php/}, the 2nd Workshop on the Evaluation of Human Language Technologies for Iberian languages, during the SEPLN 2017 conference. The organizers of the workshop offered a task related to automatic stance detection and presented a dataset of tweets in Spanish and Catalan \cite{Bosco16, taule17} where the independence of Catalonia is discussed\footnote{http://stel.ub.edu/Stance-IberEval2017/data.html}. The authors of the best system of the task do experiments with different types of features such as part of speech, lemmas, hashtags, length of tweets etc., and a set of classifiers \cite{Lai2017iTACOSAI}.
+We should note that all mentioned works were implemented on the English dataset. The first challenge in stance detection in Spanish and Catalan languages was carried out in IberEval 2017\footnote{http://nlp.uned.es/IberEval-2017/index.php/}, the 2nd Workshop on the Evaluation of Human Language Technologies for Iberian languages, during the SEPLN 2017 conference. The organizers of the workshop offered a task related to automatic stance detection and presented a dataset of tweets in Spanish and Catalan \cite{Bosco16,taule17} where the independence of Catalonia is discussed\footnote{http://stel.ub.edu/Stance-IberEval2017/data.html}. The authors of the best system of the task do experiments with different types of features such as part of speech, lemmas, hashtags, length of tweets etc., and a set of classifiers \cite{Lai2017iTACOSAI}.
 
 In 2018, the third IberEval 2018 workshop\footnote{http://www.autoritas.net/MultiStanceCat-IberEval-2018/} co-located with the SEPLN 2018 conference also included a stance detection task. The aim of the MultiModal Stance Detection in tweets on Catalan \#1Oct Referendum task at IberEval 2018 (MultiStanceCat) was to detect the authors stances--in favor, against or neutral-- with respect to the Catalan October, 1 Referendum (2017) in tweets written in Spanish and Catalan from a multimodal perspective. The dataset also contained images from the given tweets \cite{taule18}.
 
@@ -58,11 +65,90 @@ The approach of the Polytechnic University of Valencia team (CriCa) \cite{Cuquer
 %%
 %%
 
-\section{Existing Datasets}
+\section{Experimental Setup}
 
-We experiment with three datasets collected from Twitter: two of them are presented in previous shared tasks, and we present our own dataset in Spanish and Catalan. 
+In this section we summarize the experiments we have conducted and explain the methods of building . We built stance detection models with existing and developed datasets. The experimental work was organized in three different setups: 
 
-\subsection{TW-1O Referendum Dataset}
+\begin{enumerate} 
+\item TF-IDF vectorization with a SVM classifier. 
+\item Vector representation of tweets with FastText models and SVM classifier.
+\item Stacked Flair and FastText vector representation of words to train a neural network (BiLSTM). 
+\end{enumerate}
+
+
+\subsection{Pre-processing and Normalization}
+
+As  tweet is a short and highly informal piece of text, we try to keep as many tokens as possible and pay much attention to textb prprocessing.  
+
+Since each tweet in the TW-1O dataset is given in context, with the previous and the next tweet, we use them to enrich the text information. We concatenate all three tweets to one document, so the number of words increases and the weight of each token in a tweet is more representative.   
+
+We try to perform exhaustive text normalization. In our case it helps to reduce the number of features for TF-IDF feature representation and to raise the number of words that correspond with the vocabulary of pre-trained models. First, we clean the text from punctuation, remove mentions starting with "@", "RT", URLs, and numbers. All the words of the corpus were converted to lowercase. We also applied lemmatization, a simplified version of this task which consists of replacing the word form with its lemma using a dictionary\footnote{\url{https://github.com/michmech/lemmatization-lists}} with word forms (values) and their lemmas (keys). The lemmatization function takes each word of a phrase, checks if it is in the values of the dictionary and replaces it with the key of the dictionary. If a word is not in the dictionary, for example if it is a named entity or incorrectly spelled word, the program does not perform any lemmatization. 
+
+This method is not accurate, and it is not capable to resolve ambiguities. This means that, for instance, the preposition \textit{para} (for) and the verb \textit{para} (to stop) will be mapped to the same lemma, namely, \textit{parar} (stop). Also it can not handle named entities, especially Spanish and Catalan surnames, for example, \textit{Ada Colau} is converted to \textit{ada colar}. To reduce the error rate, we manually edited the list of lemmas, and deleted the less frequent ambiguous words. In any case, our experiments showed that this kind of lemmatization reduces dramatically the number of features without loss of semantic information and helps in general to improve results. In addition, it allows to deal with some unseen words. For example, if the word \textit{andando} (walking) does not appear in the training corpus but another form of its lemma does, then both words will be recognized as having the same lemma, namely, the Spanish verb \textit{andar} (to walk).
+
+We split the tweets by white space; stopwords (auxiliary verbs, prepositions, articles, pronouns and the most frequent words) and words shorter than three characters are removed. The next step is normalization of orthography, which is simple replacing repeated letters with one, all vocals and the most frequent consonants, such as \textit{s, z, h, m, j} etc, and replacing common shortened words to normal form. We do not touch letters that can be double in Spanish and Catalan: \textit{t, l, r}.  The result is like following: \textit{holaaaaaaa} is converted to \textit{hola}. We also replace all letters with diacritics with simple ones to reduce the number of tokens in the TF-IDF way of vectorization. 
+
+%%  
+\subsection{TF-IDF+SVM}
+
+The first experimental setup uses a TF-IDF (Term Frequency times Inverse Document Frequency) \cite{Jones72astatistical} representation of features extracted from the corpus. This approach is similar to bag-of-words where instead of word frequency the TF-IDF measure is used.
+
+TF-IDF weighting scheme is broadly used for document and text classification, information retrieval and topic modelling. The goal of using of TF-IDF measure is to reduce the impact of words that occur too frequently in a given corpus as they are less informative than features that occur in a small part of the training corpus. The TF-IDF is the product of two statistic metrics, term frequency  and inverse document frequency.
+
+We calculate the TF-IDF scores for all unigrams in the training corpus. The number of features equals the size of the vocabulary of the dataset and represents the dimensionality of the document vector. It is extremely sparse, since the documents contains about 20-30 words. So, our task is to reduce the dimensionality of the vector. 
+
+We use the Information Gain method for feature selection, which is a term from information theory \cite{Cover:2006:EIT:1146355}. In machine learning, this measure provides a way to calculate the mutual information between the features and the classification classes. According to \cite{Aggarwal12}, mutual information defined on the basis of the level of co-occurrence between the class and word. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. It is a filter method that selects features by ranking them with correlation coefficients \cite{guyon03}. The information gain scores show how common is the feature in a target class, for example the words that occurs mainly in tweets labelled as FAVOR stance and almost never in AGAINST stance, are very informative and ranked highly. All the weights are normalized and all the features ranked from one to zero. We then select those features that are scored larger than zero.
+
+We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem. 
+
+We perform hyper-parameter optimisation by grid-search  estimated by performance metrics, accuracy, precision, and recall and measured by 5-fold cross-validation on the training set. To reduce the cost of the grid-search process, we select two parameters of SVM classifier only, C and gamma.  The kernel is RBF.  In total, there were 121 combination of the parameters. After  selecting  the  best  parameters  we  estimate  the  classification  models  via  10-fold
+cross-validation.  For the English data, we train five models according to the target and calculate the average for each metric.  We obtain the following results for the best models selected according to the cross validation F1 score
+
+In this part is explained the second approach where we use word vector representations for the tweets, or tweet embeddings as features and SVM classifier. 
+
+Vector representations of words, characters or documents, also known as "embeddings" is a technique for creating language models in continuous real valued representations. This approach requires a big amount of textual data to make these embeddings representative. We use pre-trained models FastText \cite{joulin-etal-2017-bag}, they trained over large corpora and are able to capture semantic and syntactic similarities based on co-ocurrences.
+
+Since Catalan is a less-resourced language, there are not so many NLP resources for its processing. However, FastText provide word vector models trained on Common Crawl\footnote{http://commoncrawl.org/} and Wikipedia corpora using a Continuous Bag-of-Words (CBOW) architecture with position-weights and 300 dimensions. The FastText models for Spanish, Catalan and English based on Common Crawl contain around 2 million words each. In order to produce vectors for out-of-vocabulary words, such as proper names and misspelled words, FastText word vectors are built from vectors of substrings of characters which are character n-grams of length 5, a window of size 5 and 10 negatives \cite{Grave18}. In order to do so, FastText averages the vector representation of its character n-grams. However, it fails in vectorizing totally non-grammatical entities that the model has never seen. It means that the accurate pre-processing of the text is important. 
+
+We propose to represent a tweet as an average value of the vectors of the words from a given tweet. We are aware of that this method has some limitations. It discards the word order and sentence semantics. However, according to previous work, "averaging the embeddings of words in a sentence has proven to be a surprisingly successful and efficient way of obtaining sentence embeddings" \cite{DBLP:journals/corr/KenterBR16}. A similar approach has been used in various tasks such as sentiment analysis \cite{Anselmo17,socher-etal-2013-recursive} and sentence2vec representation \cite{Ben-Lhachemi18,DBLP:journals/corr/PagliardiniGJ17}. The average tweet vector representation is calculated as following: 
+
+\[V(t)=\frac{1}{n}\sum_{i=1}^{n}W_{i}\]
+
+where 
+
+\textit{V(t)} is a vector of a tweet, 
+
+\textit{n} is a number of words in a tweet, 
+
+\textit{W} is a word vector. 
+
+The FastText model is loaded using the Gensim library \cite{rehurek_lrec}. To calculate a tweet vector, we coded a simple function which first assigns a vector to each token in a tweet, skipping non-processable entities, and calculate the average vector for the tweet. It returns a document-feature matrix with 300 features. 
+
+Since the words in the vocabulary of the model are from real world texts, Wikipedia and news, they are well spelled, hence we change the text pre-processing method: we do not replace diacritics and stopwords. We remove punctuation, numbers, hashtags, mentions, links and RTs as well. 
+
+
+
+\subsection{Neural Architecture}
+
+In the third setup we use the neural architecture implemented in Flair library. The classification model combines FastText embeddings and Flair embeddings to represent the text. Furthermore, the Flair system implements a bidirectional Long short-term memory (BiLSTM) architecture.
+
+Flair library \footnote{https://github.com/zalandoresearch/flair} provides an environment for building classification models based on neural networks. It is a Python library which allows to apply NLP models to many tasks, such as named entity recognition (NER), part-of-speech tagging (PoS), word sense disambiguation, and text classification. In sequence labelling tasks, Flair obtained best results for a number of public benchmarks such as PoS tagging and NER \cite{akbik-etal-2018-contextual}. It is multilingual system and contains models for some less-resourced languages, such as Catalan. Flair has simple interfaces for combining different word and document embeddings. The framework is based directly on Pytorch, making it easy to train the models and experiment with new approaches. The library allows to prepare the text corpus, calculate the vector representations and build statistical models with recurrent neural networks. 
+
+Flair models allow to combine different types of embeddings by concatenating each embedding vector to form the final word vectors in a stack. For instance, stacked embeddings may mix FastText static word embeddings and Flair contextual character embeddings, or Flair with ELMo contextual embeddings \cite{Peters2018}. According to experiments done by the authors of Flair, in many configurations it may be beneficial to combine the Flair embeddings with static word embeddings to add potentially greater latent word-level semantics.
+
+Flair architecture for text classification is based on a BiLSTM which is a type of recurrent neural network (RNN) \cite{Schuster97}. RNNs are capable of using internal states, so-called memory, to process sequences of input, building the network on all previously seen inputs, which allows to take into account the context of a sentence. Moreover, the value of each hidden layer unit also depends on its previous state, so the word order and the character order are also considered. Flair includes a wrapper for tuning the neural network with the hyper-parameter selection tool Hyperopt\footnote{https://github.com/hyperopt/hyperopt} \cite{Bergstra:2013:MSM:3042817.3042832}. We trained our models selecting a stacked embedding configuration consisting of FastText Common Crawl and Flair contextual character embeddings.
+
+\subsection{Evaluation Metrics}
+
+For evaluating models in the cross-validation step, we use F1 macro-average for all three classes. F1 score macro-average is calculated as F1 metric for each label and their unweighted mean value. This does not take imbalanced data into account. In multi-class classification, macro-average F1 treats all classes equally while F1 micro-average favours the more populated classes \cite{Sokolova:2009}.
+
+The organizers of Semeval 2016 and IberEval 2018 used the macro-average score of two classes: F1 score (FAVOR) and F1 score (AGAINST), as the bottom-line evaluation metric. The F1 score of NEUTRAL (NONE) class is not taken into account. They provided a Perl script\footnote{\url{http://alt.qcri.org/semeval2016/task6/data/uploads/eval_semeval16_task6_v2.zip}} that calculate the final F-score with this formula: 
+\[F1_{avg} = \frac{F1_{favor} + F1_{against}}{2}\]
+
+The same metric to evaluate the performance when testing of the experiments is applied. 
+
+
+\section{TW-1O Referendum Dataset}
 
 The dataset in Catalan and Spanish, called TW-1O Referendum Dataset, is created by \cite{taule18} and first presented in IberEval shared task in 2018, it contans a collection of Tweets in Spanish and Catalan languages. It is annotated with stance towards the referendum about the self determination of Catalonia region in 2017. 
 
@@ -98,7 +184,7 @@ STANCE: FAVOR
 Translation: \textit{Nothing and nobody will stop us \#Votarem \#DretaDecidir \#1Oct \#CatalunyaLliure \#defensemlademocracia http://t.co/PgVLYH8AgN}
 \end{quote}
 
-In the Table \ref{tab:twdatasetdistr} is shown that tha Catalan part of the dataset is highly imbalanced, that is why it is difficult to build robust models on this data. The performance of our models is compared in the Tables ??. 
+In the Table \ref{tab:twdatasetdistr} is shown that tha Catalan part of the dataset is highly imbalanced, that is why it is difficult to build robust models on this data.  
 
 \begin{table}[!h]
 \begin{center}
@@ -122,40 +208,86 @@ In the Table \ref{tab:twdatasetdistr} is shown that tha Catalan part of the data
  \label{tab:twdatasetdistr}
 \end{table}
 
+The performance of our models is shown in the Tables \ref{} 
+
+\begin{table}[h]
+\begin{center}
+\begin{tabularx}{\columnwidth}{|l|l|l|X|}
+
+\hline
+System &$F1_{against}$&$F1_{favor}$&$F1_{avg}$\\ 
+\hline
+TF-IDF+SVM &0.6850& 0.6453&\textbf{0.6652}\\ 
+\hline
+FastText+SVM&0.6365&0.5885&0.6125\\ 
+\hline
+Neural     & &   &  \\
+\hline
+Best IberEval 2018 &  & &0.2802\\ 
+\hline
+
+\end{tabularx}
+\caption{Result for the proposed systems trained on TW-1OReferendum ES, in Spanish, and comparison with the best result of IberEval Stance Detection task}
+    \end{center}
+    \label{tab:result_tw1o_es}
+\end{table}
+
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabularx}{\columnwidth}{|l|l|l|X|}
+\hline
+System & $F1_{against}$ & $F1_{favor}$ &$F1_{avg}$\\
+\hline
+TF-IDF+SVM & 0.2286& 0.9468& \textbf{0.5877} \\
+\hline
+FastText+SVM& 0.0 & 0.9388&0.4694 \\
+\hline
+Neural      &   &  &\\ 
+\hline
+Best IberEval 2018 &    &   &0.2933 \\ 
+\hline
+
+\end{tabularx}
+\caption{Result for the systems trained on TW-1OReferendum CA, in Catalan}
+\end{center}
+\label{tab:result_tw1o_ca}
+\end{table}
+
+
+
 
 %\subsection{English Stance Dataset}
 %The dataset in English was presented within the 2016 SemEval shared task \cite{mohammad-etal-2016-semeval} and consists of a collection of tweets with certain targets of stance: abortions, climate changes, Donald Trump and Hillary Clinton etc. Besides, we create new dataset in Catalan and Spanish labelled with stance towards broadly discussed topic - independence of Catalonia. 
 
 %To prepare the dataset, the organizers collected 2 million tweets containing favor, against and ambiguous hashtags for the selected targets. Each of the tweets was also annotated for whether the target of opinion expressed in the tweet is the same as the given target of interest. The organizers made a small list of query hashtags and split them into three categories: favor, against and ambiguous. Later, the hashtags were removed from the corpus. As only tweets with hashtags in the end of the tweet were used, the grammar and syntactic structure are kept. The authors organized a questionnaire and crowdsourcing setup for annotating stance. Each tweet was annotated by eight respondents \cite{Mohammad2016ADF}. The distribution of targets in the dataset is shown in the Table \ref{tab:eng_dataset}.  
 
-\begin{table}[h]
-\centering
-\begin{tabularx}{\columnwidth}{|l|l|X|}
-\hline 
-Target              & Train & Test \\ \hline 
-Feminist Movement   & 664   & 285     \\ \hline
-Hillary Clinton     & 639   & 295   \\ \hline
-Legalization of Abortion    & 603   & 280   \\\hline
-Atheism             & 513   & 220   \\ \hline
-Climate Change is a Real Concern & 395  & 169   \\ \hline
-Total               & 2814  & 1249 \\ \hline
+%\begin{table}[h]
+%\centering
+%\begin{tabularx}{\columnwidth}{|l|l|X|}
+%\hline 
+%Target              & Train & Test \\ \hline 
+%Feminist Movement   & 664   & 285     \\ \hline
+%Hillary Clinton     & 639   & 295   \\ \hline
+%Legalization of Abortion    & 603   & 280   \\\hline
+%Atheism             & 513   & 220   \\ \hline
+%Climate Change is a Real Concern & 395  & 169   \\ \hline
+%Total               & 2814  & 1249 \\ \hline
 
-\end{tabularx}
-\caption{Number of examples per target in the SemEval 2016 English dataset}
-\label{tab:eng_dataset}
-\end{table}
-
-
-Here is an example from the dataset. 
+%\end{tabularx}
+%\caption{Number of examples per target in the SemEval 2016 English dataset}
+%\label{tab:eng_dataset}
+%\end{table}
 
 
-TWEET: \textit{I still remember the days when I prayed God for strength.. then suddenly God gave me difficulties to make me strong. Thank you God! \#SemST}
-
-TARGET: Atheism
-
-STANCE: AGAINST
+%Here is an example from the dataset. 
 
 
+%TWEET: \textit{I still remember the days when I prayed God for strength.. then suddenly God gave me difficulties to make me strong. Thank you God! \#SemST}
+
+%TARGET: Atheism
+
+%STANCE: AGAINST
 %%%
 
 \section{Catalonia Independence Dataset 2019}
@@ -281,141 +413,10 @@ In the Table \ref{tab:distr_dataset} distribution of classes in the dataset is g
 
 Developed dataset if divided in three parts: train, validation and  test in proportion 0.6, 0.2 and 0.2 respectively. 
 
-\section{Experiments}
-
-In this section we summarize the experiments we have conducted. We built stance detection models with existing and developed datasets. The experimental work was organized in three different setups: 
-
-\begin{enumerate} 
-\item TF-IDF vectorization with a SVM classifier. 
-\item Vector representation of tweets with FastText models and SVM classifier.
-\item Stacked Flair and FastText vector representation of words to train a neural network (BiLSTM). 
-\end{enumerate}
+We applied proposed systems to the developed dataset and compare the performance in the Tables \ref{tab:result_indep_es}, \ref{tab:result_indep_ca} 
 
 
-\subsection{Pre-processing and Normalization}
-
-As  tweet is a short and highly informal piece of text, we try to keep as many tokens as possible and pay much attention to textb prprocessing.  
-
-Since each tweet in the TW-1O dataset is given in context, with the previous and the next tweet, we use them to enrich the text information. We concatenate all three tweets to one document, so the number of words increases and the weight of each token in a tweet is more representative.   
-
-We try to perform exhaustive text normalization. In our case it helps to reduce the number of features for TF-IDF feature representation and to raise the number of words that correspond with the vocabulary of pre-trained models. First, we clean the text from punctuation, remove mentions starting with "@", "RT", URLs, and numbers. All the words of the corpus were converted to lowercase. We also applied lemmatization, a simplified version of this task which consists of replacing the word form with its lemma using a dictionary\footnote{\url{https://github.com/michmech/lemmatization-lists}} with word forms (values) and their lemmas (keys). The lemmatization function takes each word of a phrase, checks if it is in the values of the dictionary and replaces it with the key of the dictionary. If a word is not in the dictionary, for example if it is a named entity or incorrectly spelled word, the program does not perform any lemmatization. 
-
-This method is not accurate, and it is not capable to resolve ambiguities. This means that, for instance, the preposition \textit{para} (for) and the verb \textit{para} (to stop) will be mapped to the same lemma, namely, \textit{parar} (stop). Also it can not handle named entities, especially Spanish and Catalan surnames, for example, \textit{Ada Colau} is converted to \textit{ada colar}. To reduce the error rate, we manually edited the list of lemmas, and deleted the less frequent ambiguous words. In any case, our experiments showed that this kind of lemmatization reduces dramatically the number of features without loss of semantic information and helps in general to improve results. In addition, it allows to deal with some unseen words. For example, if the word \textit{andando} (walking) does not appear in the training corpus but another form of its lemma does, then both words will be recognized as having the same lemma, namely, the Spanish verb \textit{andar} (to walk).
-
-We split the tweets by white space; stopwords (auxiliary verbs, prepositions, articles, pronouns and the most frequent words) and words shorter than three characters are removed. The next step is normalization of orthography, which is simple replacing repeated letters with one, all vocals and the most frequent consonants, such as \textit{s, z, h, m, j} etc, and replacing common shortened words to normal form. We do not touch letters that can be double in Spanish and Catalan: \textit{t, l, r}.  The result is like following: \textit{holaaaaaaa} is converted to \textit{hola}. We also replace all letters with diacritics with simple ones to reduce the number of tokens in the TF-IDF way of vectorization. 
-
-%%  
-\subsection{TF-IDF+SVM}
-
-The first experimental setup uses a TF-IDF (Term Frequency times Inverse Document Frequency) \cite{Jones72astatistical} representation of features extracted from the corpus. This approach is similar to bag-of-words where instead of word frequency the TF-IDF measure is used.
-
-TF-IDF weighting scheme is broadly used for document and text classification, information retrieval and topic modelling. The goal of using of TF-IDF measure is to reduce the impact of words that occur too frequently in a given corpus as they are less informative than features that occur in a small part of the training corpus. The TF-IDF is the product of two statistic metrics, term frequency  and inverse document frequency.
-
-We calculate the TF-IDF scores for all unigrams in the training corpus. The number of features equals the size of the vocabulary of the dataset and represents the dimensionality of the document vector. It is extremely sparse, since the documents contains about 20-30 words. So, our task is to reduce the dimensionality of the vector. 
-
-We use the Information Gain method for feature selection, which is a term from information theory \cite{Cover:2006:EIT:1146355}. In machine learning, this measure provides a way to calculate the mutual information between the features and the classification classes. According to \cite{Aggarwal12}, mutual information defined on the basis of the level of co-occurrence between the class and word. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. It is a filter method that selects features by ranking them with correlation coefficients \cite{guyon03}. The information gain scores show how common is the feature in a target class, for example the words that occurs mainly in tweets labelled as FAVOR stance and almost never in AGAINST stance, are very informative and ranked highly. All the weights are normalized and all the features ranked from one to zero. We then select those features that are scored larger than zero.
-
-We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem. 
-
-We perform hyper-parameter optimisation by grid-search  estimated by performance metrics, accuracy, precision, and recall and measured by 5-fold cross-validation on the training set. To reduce the cost of the grid-search process, we select two parameters of SVM classifier only, C and gamma.  The kernel is RBF.  In total, there were 121 combination of the parameters. After  selecting  the  best  parameters  we  estimate  the  classification  models  via  10-fold
-cross-validation.  For the English data, we train five models according to the target and calculate the average for each metric.  We obtain the following results for the best models selected according to the cross validation F1 score
-
-In this part is explained the second approach where we use word vector representations for the tweets, or tweet embeddings as features and SVM classifier. 
-
-Vector representations of words, characters or documents, also known as "embeddings" is a technique for creating language models in continuous real valued representations. This approach requires a big amount of textual data to make these embeddings representative. We use pre-trained models FastText \cite{joulin-etal-2017-bag}, they trained over large corpora and are able to capture semantic and syntactic similarities based on co-ocurrences.
-
-Since Catalan is a less-resourced language, there are not so many NLP resources for its processing. However, FastText provide word vector models trained on Common Crawl\footnote{http://commoncrawl.org/} and Wikipedia corpora using a Continuous Bag-of-Words (CBOW) architecture with position-weights and 300 dimensions. The FastText models for Spanish, Catalan and English based on Common Crawl contain around 2 million words each. In order to produce vectors for out-of-vocabulary words, such as proper names and misspelled words, FastText word vectors are built from vectors of substrings of characters which are character n-grams of length 5, a window of size 5 and 10 negatives \cite{Grave18}. In order to do so, FastText averages the vector representation of its character n-grams. However, it fails in vectorizing totally non-grammatical entities that the model has never seen. It means that the accurate pre-processing of the text is important. 
-
-We propose to represent a tweet as an average value of the vectors of the words from a given tweet. We are aware of that this method has some limitations. It discards the word order and sentence semantics. However, according to previous work, "averaging the embeddings of words in a sentence has proven to be a surprisingly successful and efficient way of obtaining sentence embeddings" \cite{DBLP:journals/corr/KenterBR16}. A similar approach has been used in various tasks such as sentiment analysis \cite{Anselmo17,socher-etal-2013-recursive} and sentence2vec representation \cite{Ben-Lhachemi18,DBLP:journals/corr/PagliardiniGJ17}. The average tweet vector representation is calculated as following: 
-
-\[V(t)=\frac{1}{n}\sum_{i=1}^{n}W_{i}\]
-
-where 
-
-\textit{V(t)} is a vector of a tweet, 
-
-\textit{n} is a number of words in a tweet, 
-
-\textit{W} is a word vector. 
-
-The FastText model is loaded using the Gensim library \cite{rehurek_lrec}. To calculate a tweet vector, we coded a simple function which first assigns a vector to each token in a tweet, skipping non-processable entities, and calculate the average vector for the tweet. It returns a document-feature matrix with 300 features. 
-
-Since the words in the vocabulary of the model are from real world texts, Wikipedia and news, they are well spelled, hence we change the text pre-processing method: we do not replace diacritics and stopwords. We remove punctuation, numbers, hashtags, mentions, links and RTs as well. 
-
-
-
-\subsection{Neural Architecture}
-
-In the third setup we use the neural architecture implemented in Flair library. The classification model combines FastText embeddings and Flair embeddings to represent the text. Furthermore, the Flair system implements a bidirectional Long short-term memory (BiLSTM) architecture.
-
-Flair library \footnote{https://github.com/zalandoresearch/flair} provides an environment for building classification models based on neural networks. It is a Python library which allows to apply NLP models to many tasks, such as named entity recognition (NER), part-of-speech tagging (PoS), word sense disambiguation, and text classification. In sequence labelling tasks, Flair obtained best results for a number of public benchmarks such as PoS tagging and NER \cite{akbik-etal-2018-contextual}. It is multilingual system and contains models for some less-resourced languages, such as Catalan. Flair has simple interfaces for combining different word and document embeddings. The framework is based directly on Pytorch, making it easy to train the models and experiment with new approaches. The library allows to prepare the text corpus, calculate the vector representations and build statistical models with recurrent neural networks. 
-
-Flair models allow to combine different types of embeddings by concatenating each embedding vector to form the final word vectors in a stack. For instance, stacked embeddings may mix FastText static word embeddings and Flair contextual character embeddings, or Flair with ELMo contextual embeddings \cite{Peters2018}. According to experiments done by the authors of Flair, in many configurations it may be beneficial to combine the Flair embeddings with static word embeddings to add potentially greater latent word-level semantics.
-
-Flair architecture for text classification is based on a BiLSTM which is a type of recurrent neural network (RNN) \cite{Schuster97}. RNNs are capable of using internal states, so-called memory, to process sequences of input, building the network on all previously seen inputs, which allows to take into account the context of a sentence. Moreover, the value of each hidden layer unit also depends on its previous state, so the word order and the character order are also considered. Flair includes a wrapper for tuning the neural network with the hyper-parameter selection tool Hyperopt\footnote{https://github.com/hyperopt/hyperopt} \cite{Bergstra:2013:MSM:3042817.3042832}. We trained our models selecting a stacked embedding configuration consisting of FastText Common Crawl and Flair contextual character embeddings.
-
-\subsection{Evaluation Metrics}
-
-For evaluating models in the cross-validation step, we use F1 macro-average for all three classes. F1 score macro-average is calculated as F1 metric for each label and their unweighted mean value. This does not take imbalanced data into account. In multi-class classification, macro-average F1 treats all classes equally while F1 micro-average favours the more populated classes \cite{Sokolova:2009}.
-
-The organizers of Semeval 2016 and IberEval 2018 used the macro-average score of two classes: F1 score (FAVOR) and F1 score (AGAINST), as the bottom-line evaluation metric. The F1 score of NEUTRAL (NONE) class is not taken into account. They provided a Perl script\footnote{\url{http://alt.qcri.org/semeval2016/task6/data/uploads/eval_semeval16_task6_v2.zip}} that calculate the final F-score with this formula: 
-\[F1_{avg} = \frac{F1_{favor} + F1_{against}}{2}\]
-
-The same metric to evaluate the performance when testing of the experiments is applied. 
-
-
-\section{Results}
-
-In this section we summarize the results of proposed systems for automatic stance detection.
-
-\subsection{TW-1OReferendum Dataset}
-
-\begin{table}[h]
-\begin{center}
-\begin{tabularx}{\columnwidth}{|l|l|l|X|}
-
-\hline
-System &$F1_{against}$&$F1_{favor}$&$F1_{avg}$\\ 
-\hline
-TF-IDF+SVM &0.6850& 0.6453&\textbf{0.6652}\\ 
-\hline
-FastText+SVM&0.6365&0.5885&0.6125\\ 
-\hline
-Neural     & &   &  \\
-\hline
-Best IberEval 2018 &  & &0.2802\\ 
-\hline
-
-\end{tabularx}
-\caption{Result for the proposed systems trained on TW-1OReferendum ES, in Spanish, and comparison with the best result of IberEval Stance Detection task}
-    \end{center}
-    \label{tab:result_tw1o_es}
-\end{table}
-
-
-\begin{table}[!h]
-\begin{center}
-\begin{tabularx}{\columnwidth}{|l|l|l|X|}
-\hline
-System & $F1_{against}$ & $F1_{favor}$ &$F1_{avg}$\\
-\hline
-TF-IDF+SVM & 0.2286& 0.9468& \textbf{0.5877} \\
-\hline
-FastText+SVM& 0.0 & 0.9388&0.4694 \\
-\hline
-Neural      &   &  &\\ 
-\hline
-Best IberEval 2018 &    &   &0.2933 \\ 
-\hline
-
-\end{tabularx}
-\caption{Result for the systems trained on TW-1OReferendum CA, in Catalan}
-\end{center}
-\label{tab:result_tw1o_ca}
-\end{table}
-
-
-\begin{table}[h]
+\begin{table}[ht]
 \begin{tabularx}{\columnwidth}{|l|l|l|X|}
 \hline
 System       & $F1_{against}$ & $F1_{favor}$&$F1_{avg}$\\ \hline
@@ -442,42 +443,23 @@ Neural  &   &   & \\
 \label{tab:result_indep_ca}
 \end{table}
 
-\section{Conclusion notes}
+
+\section{Discussion}
+
+In this section we summarize the results of proposed systems for automatic stance detection.
+
+\todo[inline]{We also say something about the different methods in which the datasets have been built, making a comparison about them and saying why the independence dataset is the result of an interesting methodology to build twitter-based datasets}
+
+
+\section{Concluding Remarks}
 
 In this paper we presented a new dataset for stance detection task: Catalan Indepencence 2019 - collected on Twitter data; and a method semi-automatic data annotation.  
 
 It should be underlined that in the Spanish and Catalan datasets, there is still a wide margin to test state of the art NLP approaches to build better stance classifications systems.
 
-\section{Copyrights}
-
-The Language Resouces and Evaluation Conference (LREC)
-proceedings are published by the European Language Resources Association (ELRA).
-They are available online from the conference website.
-
-ELRA's policy is to acquire copyright for all LREC contributions. In assigning
-your copyright, you are not forfeiting your right to use your contribution
-elsewhere. This you may do without seeking permission and is subject only to
-normal acknowledgement to the LREC proceedings. The LREC 2020 Proceedings are
-licensed under CC-BY-NC, the Creative Commons Attribution-Non-Commercial 4.0
-International License.
-
 \section{Acknowledgements}
 
-Place all acknowledgements (including those concerning research grants and
-funding) in a separate section at the end of the article.
-
-
-\section*{Appendix: How to Produce the \texttt{.pdf} Version}
-
-In order to generate a PDF file out of the LaTeX file herein, when citing
-language resources, the following steps need to be performed:
-
-\begin{itemize}
-    \item{Compile the \texttt{.tex} file once}
-    \item{Invoke \texttt{bibtex} on the eponymous \texttt{.aux} file}
- %   \item{Invoke \texttt{bibtex} on the \texttt{languageresources.aux} file}
-    \item{Compile the \texttt{.tex} file twice}
-\end{itemize}
+This work has been funded by the~Spanish Ministry of Science, Innovation and Universities under the project DeepReading (RTI2018-096846-B-C21) (MCIU/AEI/FEDER, UE) and by the BBVA Big Data 2018 ``BigKnowledge for Text Mining (BigKnowledge)'' project. The second author is funded by the Ramon y Cajal Fellowship RYC-2017-23647. We also acknowledge the~support of the Nvidia Corporation with the~donation of a Titan V GPU used for this research.
 
 % \nocite{*}
 \section{Bibliographical References}\label{main:ref}
