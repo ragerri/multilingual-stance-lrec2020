@@ -157,7 +157,7 @@ Flair architecture for text classification is based on a BiLSTM which is a type 
 For evaluating models in the cross-validation step, we use F1 macro-average for all three classes. F1 score macro-average is calculated as F1 metric for each label and their unweighted mean value. This does not take imbalanced data into account. In multi-class classification, macro-average F1 treats all classes equally while F1 micro-average favours the more populated classes \cite{Sokolova:2009}.
 
 The organizers of SemEval 2016 and IberEval 2018 used the macro-average score of two classes: F1 score (FAVOR) and F1 score (AGAINST), as the bottom-line evaluation metric. The F1 score of NEUTRAL (NONE) class is not taken into account. They provided a Perl script\footnote{\url{http://alt.qcri.org/semeval2016/task6/data/uploads/eval_semeval16_task6_v2.zip}} that calculate the final F-score with this formula:
-\[F1_{avg} = \frac{F1_{favor} + F1_{against}}{2}\]
+\[F1_{macro} = \frac{F1_{favor} + F1_{against}}{2}\]
 
 The same metric to evaluate the performance when testing of the experiments is applied.
 
@@ -209,7 +209,7 @@ Nevertheless, proposed approaches in stance detection show the state-of-the-art 
 \begin{table}[!ht]\small
 \centering
 \begin{tabular}{lccc} \hline
-\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{avg}$ \\ \hline
+\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$ \\ \hline
 SVM+TF-IDF & 68.50 & 64.53 & 66.52 \\
 SVM+FTEmb & 63.65 & 58.85 & 61.25 \\
 FastText+FTEmb & 69.58 & 65.37 & \textbf{67.48} \\
@@ -223,7 +223,7 @@ Flair+FTEmb & 60.23 & 52.44 & 56.34 \\ \hline
 \begin{table}[!ht]\small
 \centering
 \begin{tabular}{lccc} \hline
-\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{avg}$\\ \hline
+\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$\\ \hline
 SVM+TF-IDF & 22.86 & 94.68 & \textbf{58.77} \\
 SVM+FTEmb & 0.00 & 93.88 & 46.94 \\
 FastText+FTEmb & 12.90 & 94.60 & 53.78 \\
