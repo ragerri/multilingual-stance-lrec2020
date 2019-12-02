@@ -139,7 +139,7 @@ where
 
 The FastText model is loaded using the Gensim library \cite{rehurek_lrec}. To calculate a tweet vector, we coded a simple function which first assigns a vector to each token in a tweet, skipping non-processable entities, and calculate the average vector for the tweet. It returns a document-feature matrix with 300 features.
 
-Since the words in the vocabulary of the model are from real world texts, Wikipedia and news, they are well spelled, hence we change the text pre-processing method: we do not replace diacritics and stopwords. We remove punctuation, numbers, hashtags, mentions, links and RTs as well.
+Since the words in the vocabulary of the model are from real world texts, Wikipedia and news, they are well spelled, hence we change the text pre-processing method: we do not replace diacritics and stopwords. We remove punctuation, numbers, mentions, links and RTs as well.
 
 \subsection{Neural Architecture}\label{sec:neural-architecture}
 
@@ -171,7 +171,7 @@ The datasets in Spanish and Catalan were collected as follows. The organizers us
   TW-10 corpus & Catalan & Spanish \\ \hline
   Average tweet length (tokens) & 37.69 & 38.86\\ \hline
 \end{tabular}
-\caption{Average length of tweets plus their context in the TW-10 corpus.}\label{tab:length_tw_dataset}
+\caption{Average length of tweets plus their context in the TW-1O corpus.}\label{tab:length_tw_dataset}
 \end{table}
 
 
