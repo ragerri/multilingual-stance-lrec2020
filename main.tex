@@ -245,7 +245,7 @@ Flair+FTEmb & 14.79 & 94.40 & 54.59 \\ \hline
 
 \section{Catalonia Independence Dataset 2019}\label{sec:independence}
 
-We present how we created the Catalan Independence Dataset (CID) in Catalan (CID-CA) and Spanish (CID-ES). During the process we tried to prevent all the weak points of TW-1O corpus, we spoke about them in the Section \ref{sec:tw1o_dataset}.
+We present how we created the Catalonia Independence Dataset (CID) in Catalan (CID-CA) and Spanish (CID-ES). During the process we tried to prevent all the weak points of TW-1O corpus, we spoke about them in the Section \ref{sec:tw1o_dataset}.
 
 We had in our disposal a collection of tweets from 12 days in February and March of 2019 posted in Barcelona and from 30 days in September of 2018 posted in the town of Terrassa, Catalonia, prepared for commercial research in stance detection and political wing prediction. One of the characteristics of this collection is that it is crawled through API with full access to the data and the text of each tweet is not limited by 140 characters, so messages up to 240 characters are presented. We decided to take advantage of it and create a new dataset for academic research. First we separated them by language with Langdetect library\footnote{https://code.google.com/archive/p/language-detection/} and obtained 680000 tweets in Catalan and 2 million tweets in Spanish. We processed each set separately. We discarded tweets with identical messages and tweets containing less than three words of text after removing usernames.
 
@@ -317,7 +317,7 @@ In the Table \ref{tab:length_ind_dataset}
 CID Corpus & Catalan & Spanish \\ \hline
 Average tweet length (tokens)& 27.17 & 30.31 \\ \hline
 \end{tabular}
-\caption{Average tweet length in the Catalan Independence Dataset (CID) after removing usernames.}\label{tab:length_ind_dataset}
+\caption{Average tweet length in the Catalonia Independence Dataset (CID) after removing usernames.}\label{tab:length_ind_dataset}
 \end{table}
 
 Here is an example of a tweet from Catalonia Independence dataset.
