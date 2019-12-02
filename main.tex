@@ -353,21 +353,17 @@ Flair+FTEmb & 61.76 & 54.84 & 58.29 \\ \hline
 \caption{Results on the Spanish testset of the Catalonia Independence Corpus (CIC-ES).}\label{tab:result_indep_es}
 \end{table}
 
-\ref{tab:result_indep_es}, \ref{tab:result_indep_ca}
+It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) and Spanish (Table \ref{tab:result_indep_es}) are higher across languages and systems than those obtained on the TW-10 dataset. This means that the semi-automatic method for the annotation of tweets presented in this paper is quite effective and provides good quality annotated data. Furthermore, there is a consistency in the behaviour of the systems across both languages, which allows to compare their performance in multilingual settings. These results are also consistent with the TW-1O Spanish subset, where the FastText+FTEmb system also obtained the best scores. Finally, the deep learning approach from Flair seems to lag behind linear classifiers. While a bit surprising, this is also coherent with the results obtained in English with the SemEval 2016 dataset, as explained in the Related Work section. Our hypothesis is that the short length of the tweets make it more difficult to generate good contextual-based word representations. However, further experimentation is required to clarify this issue.
 
 \section{Discussion}\label{sec:discussion}
 
-With respect to Spanish, After revising the confusion matrix and some wrong predictions, we can conclude that the most common errors for the Spanish models are due to the true AGAINST class being predicted as FAVOR. In Catalan, AGAINST is often predicted as FAVOR or NEUTRAL because the algorithm is highly biased towards the majority class (FAVOR), and the minority class (AGAINST) is misclassified. As each tweet in this dataset was given in the context with the previous and the next tweet, the errors occur in the documents where code-switching or changing of topic is observed. Short documents with one or two tokens after pre-processing are likely to be misclassified, too.
-
-
-In this section we summarize the results of proposed systems for automatic stance detection and compare the systems based on different corpus.
+% With respect to Spanish, After revising the confusion matrix and some wrong predictions, we can conclude that the most common errors for the Spanish models are due to the true AGAINST class being predicted as FAVOR. In Catalan, AGAINST is often predicted as FAVOR or NEUTRAL because the algorithm is highly biased towards the majority class (FAVOR), and the minority class (AGAINST) is misclassified. As each tweet in this dataset was given in the context with the previous and the next tweet, the errors occur in the documents where code-switching or changing of topic is observed. Short documents with one or two tokens after pre-processing are likely to be misclassified, too.
 
 Conducted experiments show that the dataset built on user classification and topic modelling may be the base for automatic stance detection system. It allows to get a larger data from limited resources and make the process of annotation cheaper. It permits to regulate the class distribution within the corpus with higher flexibility adding or removing users or topics. Also, this method makes the corpus more homogeneous in respect of the topic of each tweet, as it is not mixed with the context tweets. The results shown in the Table \ref{tab:dataset_compare} prove that the systems trained on the dataset created with our method perform better than the same algorithms applied on the dataset annotated manually.
 
 We should admit that our systems show similar behaviour on both datasets.
 
 SVM models are not time and resource consuming and may be implemented on relatively noisy data. At the same time, the results obtained are still competitive with respect to newer deep learning systems. In this sense, it seems that neural architectures require larger training data to achieve better results.
-
 
 \todo[inline]{We also say something about the different methods in which the datasets have been built, making a comparison about them and saying why the independence dataset is the result of an interesting methodology to build twitter-based datasets}
 
