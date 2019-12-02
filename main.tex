@@ -230,7 +230,7 @@ Still, and after seeing the results obtained for Catalan, we decided to propose 
 %\end{table}
 
 
-%Here is an example from the dataset. 
+%Here is an example from the dataset.
 
 
 %TWEET: \textit{I still remember the days when I prayed God for strength.. then suddenly God gave me difficulties to make me strong. Thank you God! \#SemST}
@@ -242,29 +242,19 @@ Still, and after seeing the results obtained for Catalan, we decided to propose 
 
 \section{Catalonia Independence Corpus 2019}\label{sec:independence}
 
-
 During the process of developing the Catalonia Independence Corpus (CIC) we tried to address the main shortcomings of the TW-10 dataset, as shown by Section \ref{sec:tw1o_dataset}.
 
-We had in our disposal a collection of tweets from 12 days in February and March of 2019 posted in Barcelona and from 30 days in September of 2018 posted in the town of Terrassa, Catalonia, prepared for commercial research in stance detection and political wing prediction. One of the characteristics of this collection is that it is crawled through API with full access to the data and the text of each tweet is not limited by 140 characters, so messages up to 240 characters are presented. We decided to take advantage of it and create a new dataset for academic research. First we separated them by language with Langdetect library\footnote{https://code.google.com/archive/p/language-detection/} and obtained 680000 tweets in Catalan and 2 million tweets in Spanish. We processed each set separately. We discarded tweets with identical messages and tweets containing less than three words of text after removing usernames.
+We had at our disposal a collection of tweets from 12 days during February and March of 2019 posted in Barcelona and during September 2018 posted in the town of Terrassa, Catalonia, prepared for commercial research in stance detection and political ideology (left-right) prediction. The collection process was performed by crawling with full access to the Twitter API, obtaining messages of up to the official limit of 240 characters. We decided to use it to create a new dataset for academic research. In order to do so, first we separated them by language\footnote{https://code.google.com/archive/p/language-detection/} and obtained 680000 tweets in Catalan and 2 million tweets in Spanish. We then processed each set separately. We discarded tweets with identical messages and tweets containing less than three words.
 
-\subsection{Annotating process}
+\textbf{Annotation} was performed using the same three labels and guidelines as the previously described datasets (SemEval 2016 and TW-10). Thus, FAVOR will state a positive stance towards the independence of Catalonia, AGAINST the opposite, and NONE will express neither a negative nor a positive stance, or simply that it is not possible to reach a conclusion.
 
-For annotating, we used the following labels similar to  those from existing datasets.
-\begin{itemize}
-\item FAVOR: positive stance towards the independence of Catalonia.
-\item AGAINST: negative stance towards the independence of Catalonia.
-\item NEUTRAL: neither negative nor positive stance or impossible to make a conclusion.
-\end{itemize}
+\subsection{User Categorization}\label{sec:categ-at-user}
 
-\subsubsection{User level}
+Unlike previous approaches, we do not annotate manually each tweet. Instead, the annotation process is based on classifying users. We first compiled a list of Twitter accounts from media, political parties and political activists that clearly and explicitly express their stance with respect to the independence of Catalonia. Secondly, we extracted the most retweeted tweets and categorized their authors manually by checking their Twitter accounts. The assumption was that for a person it is easier to annotate a whole Twitter account rather than the text of a single tweet without context. The decision about their stance was made also taking into account other aspects from the users' accounts, such as the use of special emojis and symbols that may state clearly the stance towards the target (e.g., displaying a yellow ribbon or a Spanish or Republican Catalan flag, etc.), or by the bio section. We follow this process to assign a FAVOR, AGAINST or NEUTRAL stance to each user.
 
-The annotation process is based on user classification, which  is one of the difference from TW-1O corpus that had been created with document annotation.
+Furthermore, we extracted the relations between users based on their retweets \cite{SNA2002}. Assuming that all those who make a retweet share the author's opinion, we categorized these users with the same label as the author of the retweeted message. While this method may introduce some noise, it allowed us to quickly obtain a large amount of annotated data quite cheaply.
 
-We started the annotation with making a list of Twitter accounts of media, political parties and political activists, whose opinion about Catalonia as an independent state is explicit. Also we extracted the most retweeted tweets from our corpus and categorized the authors of these tweets manually checking their Twitter accounts. We consider that for human, it is more easy to categorize the whole user account rather than the text of a single tweet without context. The conclusion about their opinion towards the topic was made not only by the messages but also  by  the special emojis used, such as yellow ribbon that symbolize the freedom of political prisoners, Spanish or Catalan flag, images or URLs provided  with the post, and by the self presentation in the Info section of the account. We assign stance FAVOR, AGAINST or NEUTRAL to each user.
-
-We extracted relations between users using social network analysis based on retweets \cite{SNA2002}. Assuming that all those who make a retweet share the author's opinion, we categorized these users with the same label like the authors of the main message. With this method, in case that some person make a retweet without being agree with the topic, some noise can appear in the dataset.
-
-In total, 25.510 users were categorized. We do not separate the users that write in Catalan and Spanish because most of the  active users in Catalonia are bilingual and may write in both languages, it depends on the context and situation. In the Table \ref{table:users} the distribution of categorized users is presented.
+In total, 25,510 users were categorized. We do not distinguish between Catalan and Spanish tweets because most of the active users in Catalonia are bilingual and can write in both languages. Table \ref{table:users} reports the distribution of the categorized users. The final set contains 131022 unique tweets in Catalan and 202645 unique tweets in Spanish.
 
 \begin{table}[!ht]
 \centering
@@ -275,18 +265,13 @@ In total, 25.510 users were categorized. We do not separate the users that write
      Neutral & 176 \\ \hline
 \end{tabular}
 \caption{Distribution of the categorized users.}\label{table:users}
-
 \end{table}
 
-After assigning the labels to usernames, we obtain 131022 unique tweets in Catalan and 202645 unique tweets in Spanish.
+\subsubsection{Topic Detection}\label{sec:topic-detection}
 
-\subsubsection{Topic level}
+We annotated the corpus assigning the stance classes to usernames. However, this does mean that we can use every tweet from the users, given that many messages may not be related to the independence of Catalonia. In order to address this issue we performed the following steps:
 
-We annotated the corpus assigning the labels where a username is a label. However, although a user is categorized, in his account topics that are not related to politics may appear. In order to separate non-political tweets we apply the following filters.
-
-\textbf{Hashtags and keywords}. We extracted all the hashtags from the corpus and selected manually all hashtags related to the independence of Catalonia, such as \textit{\#Catalu\~naesEspa\~na, \#CatalanRepublic, \#Tabarnia, \#GolpeDeEstado, \#independ\'encia, \#judicifarsa, \#CatalanReferendum} etc, 450 hashtags in total. Also we added keywords, such as \textit{independ\'encia, refer\'endum, separatisme} etc in both languages, 25 concepts in total. We marked each tweet if it contains ``independence'' hashtag or keyword.
-
-The distribution of the tweets with the ``independence'' hashtags and keywords in the dataset is the following:
+\textbf{Hashtags and keywords}: We extracted all the hashtags from the corpus and selected manually those that were related to the independence of Catalonia, such as \textit{\#Catalu\~naesEspa\~na, \#CatalanRepublic, \#Tabarnia, \#GolpeDeEstado, \#independ\'encia, \#judicifarsa, \#CatalanReferendum} etc., totalling 450 hashtags. We also added keywords in both languages, 25 in total. We marked each tweet as being on topic if it contained one of the relevant hashtags or keywords. Table \ref{tab:relevanttweets} displays the distribution tweets after applying the hashtags and keywords filter.
 
 \begin{table}[!ht]
 \centering
@@ -296,18 +281,12 @@ Label & Catalan & Spanish\\ \hline
 Favor & 23030 & 11843 \\
 Neutral & 986 & 497 \\ \hline
 \end{tabular}
-\caption{Distribution of hashtags and keywords related to ``independence'' for the CID dataset.}
+\caption{Distribution of tweets obtained by hashtags and keywords related to ``independence''.}\label{tab:relevanttweets}
 \end{table}
 
-\textbf{Topic modelling}. As we see, there are much more tweets with the target topic labelled as FAVOR, than AGAINST and NEUTRAL. So, it is much more easy to obtain FAVOR class than others. In order to make the dataset balanced, we added more tweets to the minor classes. We applied latent Dirichlet allocation (LDA) algorithm \cite{Blei:2003:LDA:944919.944937} for topic modelling in order to separate non-political tweets from the AGAINST and NEUTRAL sets in Catalan collection and NEUTRAL set in Spanish collection. Here, the LDA topic modelling is some kind of a basic target detection algorithm.
+\textbf{Topic modelling}: We can see in Table \ref{tab:relevanttweets} that the vast majority of the tweets are labelled as FAVOR. In order obtain a balanced dataset, we needed to add more tweets to the under-represented classes. We use the MALLET \cite{McCallumMALLET} implementation of Latent Dirichlet allocation (LDA) \cite{Blei:2003:LDA:944919.944937} as a kind of basic target detection algorithm to the corpus of categorized users described in Table \ref{table:users}. The objective was to obtain more relevant tweets for our under-populated classes (AGAINST and NEUTRAL in Catalan and NEUTRAL in Spanish). We manually revised the obtained topics and selected only those tweets which were clustered within the ``independence'' topic.
 
-LDA is widely used unsupervised machine learning technique which is able to detect topics in sets of unstructured text documents where each topic is characterized by a distribution over words. It is considered that LDA modelling over tweets performs fairly well though with some errors because of the documents length which is limited up to 240 characters. We use MALLET's LDA \cite{McCallumMALLET} topic modelling and topic coherence measure (U Mass) to estimate the best number of topics in the set of documents. We manually revised the topics and select only tweets which were clustered  as "independence" topic.
-
-From each annotated collection we selected approximately 10.000 maintaining the proportion of the users in the initial dataset. We also keep only those tweets that contain more than four words. We did not do any manual revision after.
-
-The average length of a tweet in Catalan Independence Dataset is slightly lower than in the TW-1O (see Table \ref{tab:length_tw_dataset}) but we should notice that in the TW-1O corpus there are three tweet concatenated and in CI only one, and also the shortest documents were filtered out.
-
-In the Table \ref{tab:length_ind_dataset}
+% LDA is widely used unsupervised machine learning technique which is able to detect topics in sets of unstructured text documents where each topic is characterized by a distribution over words. It is considered that LDA modelling over tweets performs fairly well though with some errors because of the documents length which is limited up to 240 characters.
 
 \begin{table}[!ht]
 \centering
@@ -315,25 +294,10 @@ In the Table \ref{tab:length_ind_dataset}
 CID Corpus & Catalan & Spanish \\ \hline
 Average tweet length (tokens)& 27.17 & 30.31 \\ \hline
 \end{tabular}
-\caption{Average tweet length in the Catalonia Independence Dataset (CID) after removing usernames.}\label{tab:length_ind_dataset}
+\caption{Average tweet length in the Catalonia Independence Corpus.}\label{tab:length_ind_dataset}
 \end{table}
 
-Here is an example of a tweet from Catalonia Independence dataset.
-
-\begin{quote}
-TWEET. \textit{Puigdemont visitar\`a el dia 13 de febrer la Universitat de Groningen dels Pa\"isos Baixos i presentar\'a  La crisi catalana, una oportunitat per Europa. \'Es un goig veure com ens reben els pa\"isos democr\`atics https://t.co/O38mDKwwn3}
-
-STANCE: FAVOR
-
-LANGUAGE: Catalan
-
-Translation: \textit{Puigdemont will visit
-on February, 13 the University of Groningen of the Netherlands and present The Catalan Crisis, An Opportunity For Europe.
-It's a pleasure to see how democratic countries are receiving us https://t.co/O38mDKwwn3}
-\end{quote}
-
-In the Table \ref{tab:distr_dataset} distribution of classes in the dataset is given to illustrate that the FAVOR and AGAINST classes are perfectly balanced.
-
+Finally, we selected approximately 10,000 tweets (excluding those shorter than 4 words) per language keeping the proportion of users from the initial pool of crawled tweets. We split them keeping 60\% for training, and 20\% each for development and test. The average length of a tweet in Catalan Independence Corpus (in Table \ref{tab:length_ind_dataset}) is slightly shorter than that of the TW-1O dataset (see Table \ref{tab:length_tw_dataset}) given that our corpus does not include previous and next tweets as context. However, our corpus is larger than previous works \cite{mohammad-etal-2016-semeval,taule18} and presents a more balanced distribution of classes, as shown by Table \ref{tab:distr_dataset}.
 
 \begin{table}[!ht]
 \centering
@@ -344,12 +308,38 @@ Favor & 3902 & 4104 \\
 Neutral & 2158 & 1868 \\ \hline
 Total & 10048 & 10077 \\ \hline
 \end{tabular}
-\caption{Distribution of classes in the Catalonia Independence Dataset.}\label{tab:distr_dataset}
+\caption{Distribution of classes in the Catalonia Independence Corpus.}\label{tab:distr_dataset}
 \end{table}
 
-Developed dataset if divided in three parts: train, validation and  test in proportion 0.6, 0.2 and 0.2 respectively.
+Finally, here we can see an example from Catalonia Independence Corpus.
 
-We applied proposed systems to the developed dataset and compare the performance in the Tables \ref{tab:result_indep_es}, \ref{tab:result_indep_ca}
+\begin{quote}
+\textbf{Tweet:} \textit{Puigdemont visitar\`a el dia 13 de febrer la Universitat de Groningen dels Pa\"isos Baixos i presentar\'a  La crisi catalana, una oportunitat per Europa. \'Es un goig veure com ens reben els pa\"isos democr\`atics https://t.co/O38mDKwwn3}
+
+\textbf{Stance:} FAVOR
+
+\textbf{Language}: Catalan
+
+\textbf{Translation}: \textit{Puigdemont will visit
+on February 13th the University of Groningen, Netherlands, and present The Catalan Crisis, An Opportunity For Europe.
+It's a pleasure to see how democratic countries are receiving us https://t.co/O38mDKwwn3}
+\end{quote}
+
+
+\subsection{Results}\label{sec:results}
+
+This section reports on the results obtained by the systems presented in Section \ref{sec:experiment}.
+
+\begin{table}[!ht]
+\begin{tabular}{lccc}\hline
+\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$ \\ \hline
+SVM+TF-IDF & 68.89 & 72.91 & 70.90 \\
+SVM+FTEmb & 59.43 & 64.46 & 61.95 \\
+FastText+FTEmb & 70.73 & 72.21 & \textbf{71.47} \\
+Flair+FTEmb & 59.08 & 58.08 & 58.96 \\ \hline
+\end{tabular}
+\caption{Results on the Catalan testset of the Catalonia Independence Corpus (CIC-CA).}\label{tab:result_indep_ca}
+\end{table}
 
 \begin{table}[!ht]
 \centering
@@ -363,17 +353,7 @@ Flair+FTEmb & 61.76 & 54.84 & 58.29 \\ \hline
 \caption{Results on the Spanish testset of the Catalonia Independence Corpus (CIC-ES).}\label{tab:result_indep_es}
 \end{table}
 
-\begin{table}[!ht]
-\begin{tabular}{lccc}\hline
-\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$ \\ \hline
-SVM+TF-IDF & 68.89 & 72.91 & 70.90 \\
-SVM+FTEmb & 59.43 & 64.46 & 61.95 \\
-FastText+FTEmb & 70.73 & 72.21 & \textbf{71.47} \\
-Flair+FTEmb & 59.08 & 58.08 & 58.96 \\ \hline
-\end{tabular}
-\caption{Results on the Catalan testset of the Catalonia Independence Corpus (CIC-CA).}\label{tab:result_indep_ca}
-\end{table}
-
+\ref{tab:result_indep_es}, \ref{tab:result_indep_ca}
 
 \section{Discussion}\label{sec:discussion}
 
