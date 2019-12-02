@@ -10,7 +10,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage{hyperref}
 \usepackage{xstring}
-\usepackage{todonotes}
+x\usepackage{todonotes}
 \newcommand{\secref}[1]{\StrSubstitute{\getrefnumber{#1}}{.}{ }}
 
 \title{Multilingual Stance Detection: The Catalonia Independence Corpus}
@@ -383,7 +383,7 @@ It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) 
 
 In this paper we provide a new dataset for stance detection in Catalan and Spanish. The objective is two-fold: (i) to promote research on stance detection in other languages different to English and, (ii) to facilitate experimentation in multilingual and cross-lingual settings. We show that the methodology used to build the Catalonia Independence Corpus generates good quality annotated data without having to manually annotate tweet by tweet. Most importantly, it also helps to alleviate the imbalance in the classes distribution. Our experimental results confirm these considerations as the tested systems exhibit consistent behaviour across languages. We believe that our methodology can help to obtain larger annotated datasets from limited resources while making the annotation process cheaper and faster.
 
-Additionally, we establish new state-of-the-art results on the TW-1O dataset for both Catalan and Spanish. Our hypothesis to explain the large difference with previous work is the more exhaustive pre-processing performed, apart from the use of word embeddings to obtain the tweet representations. The results also show the superior performance of the fastText linear classifier over SVM or RNN approaches on both datasets. These results are somewhat similar to those obtain for English with the SemEval 2016 data.
+Additionally, we establish new state-of-the-art results on the TW-1O dataset for both Catalan and Spanish. Our hypothesis to explain the large difference with previous work is the more exhaustive pre-processing performed, apart from the use of the FastText word embeddings to obtain the tweets representation. The results also show the superior performance of the fastText linear classifier over SVM or RNN approaches on both datasets. These results are somewhat similar to those obtain for English with the SemEval 2016 data, where linear classifiers still are competitive or outperform newer deep learning approaches.
 
 We publicly distribute the datasets and code to facilitate further multilingual and cross-lingual research on stance detection.
 
