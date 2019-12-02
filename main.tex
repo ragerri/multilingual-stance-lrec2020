@@ -13,7 +13,7 @@
 \usepackage{todonotes}
 \newcommand{\secref}[1]{\StrSubstitute{\getrefnumber{#1}}{.}{ }}
 
-\title{Multilingual Stance Detection}
+\title{Multilingual Stance Detection: The Catalonia Independence Corpus}
 
 \name{Elena Zotova$^1$, Rodrigo Agerri$^1$, Manuel Nu\~nez$^2$, German Rigau$^1$}
 
@@ -23,8 +23,7 @@ ezotova001@ikasle.ehu.eus, rodrigo.agerri@ehu.eus, manuel.nunez@lunigtuk.com,
 german.rigau@ehu.eus}
 
 
-\abstract{
-This paper presents a dataset for stance detection on Twitter in Catalan and Spanish languages. The dataset is annotated with stance towards one topic, independence in Catalonia. The paper explains the method of semi-automatic dataset preparation based on Twitter users' categorization. The study evaluates baseline models such as TF-IDF with support vector machine classifier, document embeddings, and contextual character-based with LSTM architecture on the developed dataset and compare the performance with models trained on existing datasets. Proposed systems show state-of-the-art results in the stance detection task on the IberEval 2018 dataset.    \\ \newline \Keywords{Stance Detection, Opinion Mining, Stance Detection Dataset} }
+\abstract{Stance detection aims to determine the attitude of a given text with respect to a specific topic or claim. While stance detection has been fairly well researched in the last years, most the work has been focused on English. This is mostly due to the lack of annotated data in other languages different to English. This paper addresses this issue by presenting a new multilingual dataset for stance detection in Twitter for the Catalan and Spanish languages, making it possible to research stance detection in multilingual and cross-lingual settings. The dataset is annotated with stance towards one topic, namely, the independence of Catalonia. The paper explains the method of semi-automatic dataset preparation based on Twitter users' categorization. The study evaluates baseline models such as TF-IDF with support vector machine classifier, document embeddings, and contextual character-based with LSTM architecture on the developed dataset and compare the performance with models trained on existing datasets. Proposed systems show state-of-the-art results in the stance detection task on the IberEval 2018 dataset.    \\ \newline \Keywords{Stance Detection, Opinion Mining, Stance Detection Dataset} }
 
 \begin{document}
 
@@ -385,9 +384,9 @@ We applied proposed systems to the developed dataset and compare the performance
 SVM+TF-IDF & 70.67 & 71.50 & 71.09 \\
 SVM+FTEmb & 64.24 & 62.51 & 63.38 \\
 FastText+FTEmb & 73.20 & 71.13 & \textbf{72.43} \\
-Flair+FTEmb & 43.45 & 59.33 & 51.39 \\ \hline
+Flair+FTEmb & 61.76 & 54.84 & 58.29 \\ \hline
 \end{tabular}
-\caption{Results on the Spanish testset of the Catalonia Independence Dataset (CID-ES).}\label{tab:result_indep_es}
+\caption{Results on the Spanish testset of the Catalonia Independence Corpus (CIC-ES).}\label{tab:result_indep_es}
 \end{table}
 
 \begin{table}[!ht]
@@ -396,9 +395,9 @@ Flair+FTEmb & 43.45 & 59.33 & 51.39 \\ \hline
 SVM+TF-IDF & 68.89 & 72.91 & 70.90 \\
 SVM+FTEmb & 59.43 & 64.46 & 61.95 \\
 FastText+FTEmb & 70.73 & 72.21 & \textbf{71.47} \\
-Flair+FTEmb & 55.67 & 58.61 & 57.14 \\ \hline
+Flair+FTEmb & 59.08 & 58.08 & 58.96 \\ \hline
 \end{tabular}
-\caption{Results on the Catalan testset of the Catalonia Independence Dataset (CID-CA).}\label{tab:result_indep_ca}
+\caption{Results on the Catalan testset of the Catalonia Independence Corpus (CIC-CA).}\label{tab:result_indep_ca}
 \end{table}
 
 
