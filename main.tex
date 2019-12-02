@@ -136,11 +136,7 @@ The models are tuned via cross-validation for the TW-10 dataset. The Catalonia I
 
 \section{TW-1O Referendum Dataset}\label{sec:tw1o_dataset}
 
-We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem.
-
-The dataset in Catalan and Spanish, called TW-1O Referendum Dataset, is created by \cite{taule18} and first presented in IberEval shared task in 2018, it contains a collection of Tweets in Spanish and Catalan languages. It is annotated with stance towards the referendum about the self determination of Catalonia region in 2017.
-
-The datasets in Spanish and Catalan were collected as follows. The organizers used the \#1oct, \#1O, \#1oct2017 and \#1octl6 hashtags to select the tweets to be included in the TW-1O Referendum corpus\footnote{http://www.autoritas.net/MultiStanceCat-IberEval2018/corpus/} \cite{taule18}. These hashtags were the most widely used (especially the first two) in the debate on the right to hold a unilateral referendum on Catalan independence from Spain. A total of 87,449 tweets in Catalan and 132,699 tweets in Spanish were collected from September, 20 to the day before the Referendum was held (2017 September, 30). From this data the TW-1O Referendum corpus was built. The final dataset consists of 11,398 tweets: 5,853 written in Catalan (the TW-1OReferendum CA corpus) and 5,545 in Spanish (the TW-1OReferendum ES corpus). The dataset was annotated manually by three experts. Also, each tweet is given with its context, with the previous and the next tweet of the same author. In the Table \ref{tab:length_tw_dataset} is shown the length of a document after concatenating three tweets and removing usernames starting from ``@'' symbol as we do not use them as features.
+The TW-10 for IberEval 2018 dataset was collected by the hashtags \#1oct, \#1O, \#1oct2017 and \#1octl6 to obtain the tweets from Twitter\cite{taule18}. These hashtags were widely used in the debate on the right to hold a referendum on Catalan independence on the 1st of October 2017. A total of 87,449 tweets in Catalan and 132,699 tweets in Spanish were collected between the 20th and 30th of September. The final dataset consists of 11,398 tweets: 5,853 written in Catalan (the TW-1O-CA corpus) and 5,545 in Spanish (the TW-1O-ES corpus). The dataset was annotated manually by three experts. Also, each tweet is given together with its previous and next tweets as context. Table \ref{tab:length_tw_dataset} shows the average length of tweets after concatenating the tweet with its context.
 
 \begin{table}[!ht]
 \begin{tabular}{llc} \hline
@@ -151,19 +147,19 @@ The datasets in Spanish and Catalan were collected as follows. The organizers us
 \end{table}
 
 
-Here is an example from TW-1O Referendum corpus:
+% Here is an example from TW-1O Referendum corpus:
 
-\begin{quote}
-TWEET: \textit{Res ni ning\'u, ens aturar\'a \#Votarem \#DretaDecidir \#1Oct \#CatalunyaLliure \#defensemlademocracia http://t.co/PgVLYH8AgN }
+% \begin{quote}
+% TWEET: \textit{Res ni ning\'u, ens aturar\'a \#Votarem \#DretaDecidir \#1Oct \#CatalunyaLliure \#defensemlademocracia http://t.co/PgVLYH8AgN }
 
-LANGUAGE: Catalan
+% LANGUAGE: Catalan
 
-STANCE: FAVOR
+% STANCE: FAVOR
 
-Translation: \textit{Nothing and nobody will stop us \#Votarem \#DretaDecidir \#1Oct \#CatalunyaLliure \#defensemlademocracia http://t.co/PgVLYH8AgN}
-\end{quote}
+% Translation: \textit{Nothing and nobody will stop us \#Votarem \#DretaDecidir \#1Oct \#CatalunyaLliure \#defensemlademocracia http://t.co/PgVLYH8AgN}
+% \end{quote}
 
-In the Table \ref{tab:twdatasetdistr} is shown that tha Catalan part of the dataset is highly imbalanced, that is why it is difficult to build robust models on this data.
+Table \ref{tab:twdatasetdistr} illustrates the imbalanced nature of the Catalan subset, which makes it difficult to built and compare models for Catalan and across languages. Thus, while for Spanish the distribution of classes is quite similar, in Catalan the FAVOR class occurs 35 times more than AGAINST, and 8 times more than NONE.
 
 \begin{table}[!ht]
 \centering
@@ -171,29 +167,13 @@ In the Table \ref{tab:twdatasetdistr} is shown that tha Catalan part of the data
       Label & Catalan & Spanish\\ \hline
     Against & 120 & 1785 \\
       Favor & 4085 & 1680 \\
-     Neutral & 479 & 972 \\ \hline
+     None & 479 & 972 \\ \hline
       Total & 4684 & 4437 \\ \hline
 \end{tabular}
 \caption{Distribution of classes in the TW-1O trainset.}\label{tab:twdatasetdistr}
 \end{table}
 
-The performance of our models is shown for Spanish in the Table \ref{tab:result_tw1o_es} and for Catalan in the Table \ref{tab:result_tw1o_ca}. After revising the confusion matrix and some wrong predictions, we can conclude that the most common errors for the Spanish models are due to the true AGAINST class being predicted as FAVOR. In Catalan, AGAINST is often predicted as FAVOR or NEUTRAL because the algorithm is highly biased towards the majority class (FAVOR), and the minority class (AGAINST) is misclassified. As each tweet in this dataset was given in the context with the previous and the next tweet, the errors occur in the documents where code-switching or changing of topic is observed. Short documents with one or two tokens after pre-processing are likely to be misclassified, too.
-
-Nevertheless, proposed approaches in stance detection show the state-of-the-art result comparing with the benchmark, the best system of Best IberEval 2018 shared task \cite{Segura-Bedmar18,taule18}.
-
-\begin{table}[!ht]\small
-\centering
-\begin{tabular}{lccc} \hline
-\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$ \\ \hline
-SVM+TF-IDF & 68.50 & 64.53 & 66.52 \\
-SVM+FTEmb & 63.65 & 58.85 & 61.25 \\
-FastText+FTEmb & 69.58 & 65.37 & \textbf{67.48} \\
-Flair+FTEmb & 60.23 & 52.44 & 56.34 \\ \hline
-\textbf{Baseline} \\
-\cite{Segura-Bedmar18} & - & - & 28.02 \\ \hline
-\end{tabular}
-\caption{Results on the Spanish testset of the TW-1O corpus.}\label{tab:result_tw1o_es}
-\end{table}
+Tables \ref{tab:result_tw1o_ca} and \ref{tab:result_tw1o_es} reports our results for Catalan and Spanish respectively. It is clear that the Catalan subset makes it very difficult to perform any meaningful experiments given its class distribution. While the best approach for Catalan is SVM+TDF-IDF, it is clear that the results are heavily influenced by the under-represented AGAINST class.
 
 \begin{table}[!ht]\small
 \centering
@@ -206,9 +186,26 @@ Flair+FTEmb & 14.79 & 94.40 & 54.59 \\ \hline
 \textbf{Baseline} \\
 \scriptsize{\cite{Cuquerella2018CriCaTM}} & - & - & 30.68 \\  \hline
 \end{tabular}
-\caption{Results on the Catalan testset of the TW-1O corpus.}\label{tab:result_tw1o_ca}
+\caption{Results on the TW-1O Catalan testset.}\label{tab:result_tw1o_ca}
 \end{table}
 
+\begin{table}[!ht]\small
+\centering
+\begin{tabular}{lccc} \hline
+\textbf{System} & F1$_{against}$ & F1$_{favor}$ & F1$_{macro}$ \\ \hline
+SVM+TF-IDF & 68.50 & 64.53 & 66.52 \\
+SVM+FTEmb & 63.65 & 58.85 & 61.25 \\
+FastText+FTEmb & 69.58 & 65.37 & \textbf{67.48} \\
+Flair+FTEmb & 60.23 & 52.44 & 56.34 \\ \hline
+\textbf{Baseline} \\
+\cite{Segura-Bedmar18} & - & - & 28.02 \\ \hline
+\end{tabular}
+\caption{Results on the TW-10 Spanish testset.}\label{tab:result_tw1o_es}
+\end{table}
+
+The results for Spanish are a little bit more interesting. First, we can see that the fastText linear classifier combined with FastText embeddings (FastText+FTEmb) obtains much better results than SVM+FTEmb. As the document representation is the same, that means that the fastText classifier \cite{joulin-etal-2017-bag} improves over the performance of SVM. Finally, our results clearly improve over previous state-of-the-art in this dataset for both languages.
+
+Still, and after seeing the results obtained for Catalan, we decided to propose a new multilingual corpus for stance detection with a better distribution of classes.
 
 %\subsection{English Stance Dataset}
 %The dataset in English was presented within the 2016 SemEval shared task \cite{mohammad-etal-2016-semeval} and consists of a collection of tweets with certain targets of stance: abortions, climate changes, Donald Trump and Hillary Clinton etc. Besides, we create new dataset in Catalan and Spanish labelled with stance towards broadly discussed topic - independence of Catalonia.
@@ -243,9 +240,10 @@ Flair+FTEmb & 14.79 & 94.40 & 54.59 \\ \hline
 %STANCE: AGAINST
 %%%
 
-\section{Catalonia Independence Dataset 2019}\label{sec:independence}
+\section{Catalonia Independence Corpus 2019}\label{sec:independence}
 
-We present how we created the Catalonia Independence Dataset (CID) in Catalan (CID-CA) and Spanish (CID-ES). During the process we tried to prevent all the weak points of TW-1O corpus, we spoke about them in the Section \ref{sec:tw1o_dataset}.
+
+During the process of developing the Catalonia Independence Corpus (CIC) we tried to address the main shortcomings of the TW-10 dataset, as shown by Section \ref{sec:tw1o_dataset}.
 
 We had in our disposal a collection of tweets from 12 days in February and March of 2019 posted in Barcelona and from 30 days in September of 2018 posted in the town of Terrassa, Catalonia, prepared for commercial research in stance detection and political wing prediction. One of the characteristics of this collection is that it is crawled through API with full access to the data and the text of each tweet is not limited by 140 characters, so messages up to 240 characters are presented. We decided to take advantage of it and create a new dataset for academic research. First we separated them by language with Langdetect library\footnote{https://code.google.com/archive/p/language-detection/} and obtained 680000 tweets in Catalan and 2 million tweets in Spanish. We processed each set separately. We discarded tweets with identical messages and tweets containing less than three words of text after removing usernames.
 
@@ -378,6 +376,9 @@ Flair+FTEmb & 59.08 & 58.08 & 58.96 \\ \hline
 
 
 \section{Discussion}\label{sec:discussion}
+
+With respect to Spanish, After revising the confusion matrix and some wrong predictions, we can conclude that the most common errors for the Spanish models are due to the true AGAINST class being predicted as FAVOR. In Catalan, AGAINST is often predicted as FAVOR or NEUTRAL because the algorithm is highly biased towards the majority class (FAVOR), and the minority class (AGAINST) is misclassified. As each tweet in this dataset was given in the context with the previous and the next tweet, the errors occur in the documents where code-switching or changing of topic is observed. Short documents with one or two tokens after pre-processing are likely to be misclassified, too.
+
 
 In this section we summarize the results of proposed systems for automatic stance detection and compare the systems based on different corpus.
 
