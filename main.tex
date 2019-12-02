@@ -81,65 +81,44 @@ As far as we know, most approaches to stance detection are developed for English
 
 With respect to the ``MultiModal Stance Detection in tweets on Catalan \#1Oct Referendum'' task at IberEval 2018 (MultiStanceCat), the best results for Spanish were obtained by the uc3m team \cite{Segura-Bedmar18}. They presented a system based on bag-of-words with TF-IDF vectorization. They evaluated several of the most commonly used classifiers, obtaining a final 28.02 F1 macro score in the Spanish test data. The best result in Catalan subset was obtained by the {CriCa} team \cite{Cuquerella2018CriCaTM}. Their approach consisted of combining the Spanish and Catalan subsets to create a larger and more balanced corpus. They experimented with stemming of various lengths (three, four and five characters) and removing character suffixes from the word. Since Spanish and Catalan share many words, stemming helped to generalize. Additionally, it is quite common to encounter tweets containing words and expressions in both languages. Their final F1 macro was 30.68.
 
-\section{Experimental Setup}
-\label{sec:experiment}
+\section{Experimental Setup}\label{sec:experiment}
 
-In this section we summarize the experiments we have conducted and explain the methods of building . We built stance detection models with existing and developed datasets. The experimental work was organized in three different setups:
+The development of the Catalonia Independence Corpus was motivated by the experiments performed on the IberEval TW-10 data. The result of those experiments showed that, due to the highly imbalanced nature of the TW-10 corpus, any comparison of systems across languages were not particularly meaningful. In this section we will summarize the setup for the experiments performed on both datasets, TW-10 and our new Catalonia Independence Corpus.
 
-\begin{enumerate}
-\item TF-IDF vectorization with a SVM classifier.
-\item Vector representation of tweets with FastText models and SVM classifier.
-\item Stacked Flair and FastText vector representation of words to train a neural network (BiLSTM).
-\end{enumerate}
+Apart from the data pre-processing described in Section \ref{sec:data-pre-processing}, we experimented with four different system architectures: (i) TF-IDF vectorization with a SVM classifier; (ii) a SVM trained with FastText word embeddings \cite{Grave18} for the representation of tweets; (iii) the FastText text classification system \cite{joulin-etal-2017-bag} with FastText word embeddings and, finally (iv) the Flair system \cite{akbik-etal-2018-contextual}, which implements a Recurrent Neural Network (RNN) for text classification that can be combined with static and context-based string embeddings. In the following, we describe the pre-processing and each of the architectures tested in both the TW-10 and the Catalonia Independence Corpus (CIC).
 
 \subsection{Data Pre-processing}\label{sec:data-pre-processing}
 
-As  tweet is a short and highly informal piece of text, we try to keep as many tokens as possible and pay much attention to textb prprocessing.
+Since each tweet in the TW-1O dataset is given in context, with the previous and the next tweet, we use them to obtain longer and richer texts for classification.
 
-Since each tweet in the TW-1O dataset is given in context, with the previous and the next tweet, we use them to enrich the text information. We concatenate all three tweets to one document, so the number of words increases and the weight of each token in a tweet is more representative.
+\textbf{Normalization}: We believe that normalization helps to reduce the number of features for TF-IDF feature representation and to maximize the number of words that correspond with the vocabulary of pre-trained word vector models. First, we remove all punctuation and any expression starting with "@", "RT", URLs and numbers. The next step is lowercasing and normalization of spelling: we remove repeated characters with one and replacing common shortened words to their normal form. For example, \textit{holaaaaaaa} is converted to \textit{hola}. However, we leave untouched consonants composed of two characters (\emph{tt, ll, rr}). Finally, diacritics are systematically removed.
 
-We try to perform exhaustive text normalization. In our case it helps to reduce the number of features for TF-IDF feature representation and to raise the number of words that correspond with the vocabulary of pre-trained models. First, we clean the text from punctuation, remove mentions starting with "@", "RT", URLs, and numbers. All the words of the corpus were converted to lowercase. We also applied lemmatization, a simplified version of this task which consists of replacing the word form with its lemma using a dictionary\footnote{\url{https://github.com/michmech/lemmatization-lists}} with word forms (values) and their lemmas (keys). The lemmatization function takes each word of a phrase, checks if it is in the values of the dictionary and replaces it with the key of the dictionary. If a word is not in the dictionary, for example if it is a named entity or incorrectly spelled word, the program does not perform any lemmatization.
+\textbf{Lemmatization}: Next, we apply a simplified version of lemmatization consisting of replacing the word form with its lemma via dictionary look-up \footnote{\url{https://github.com/michmech/lemmatization-lists}}. If a word is not found we leave it in its original form. This method is not capable to resolve ambiguities. For example, the Spanish preposition \textit{para} (``for'') and the verb \textit{para} (``stop'') will be mapped to the same lemma, namely, \textit{parar} (the infinitive ``to stop'' in Spanish). Furthermore, named entities are sometimes wrongly lemmatized. To reduce the error rate, we manually edited the list of lemmas, and deleted the less frequent ambiguous words. In any case, our experiments showed that this type of lemmatization reduces dramatically the number of features helping to improve results for every experimental setting. In addition, it allows to deal with unseen words. For example, if the Spanish word \textit{andando} (walking) does not appear in the training corpus but another form of its lemma does, then both words will be recognized as having the same lemma, namely, the Spanish verb \textit{andar} (to walk).
 
-This method is not accurate, and it is not capable to resolve ambiguities. This means that, for instance, the preposition \textit{para} (for) and the verb \textit{para} (stops) will be mapped to the same lemma, namely, \textit{parar} (to stop). Also it can not handle named entities, especially Spanish and Catalan surnames, for example, \textit{Ada Colau} is converted to \textit{ada colar}. To reduce the error rate, we manually edited the list of lemmas, and deleted the less frequent ambiguous words. In any case, our experiments showed that this kind of lemmatization reduces dramatically the number of features without loss of semantic information and helps in general to improve results. In addition, it allows to deal with some unseen words. For example, if the word \textit{andando} (walking) does not appear in the training corpus but another form of its lemma does, then both words will be recognized as having the same lemma, namely, the Spanish verb \textit{andar} (to walk).
+\textbf{Tokenization}: We perform whitespace tokenization, also removing stopwords (auxiliary verbs, prepositions, articles, pronouns and the most frequent words) and words shorter than three characters.
 
-We split the tweets by white space; stopwords (auxiliary verbs, prepositions, articles, pronouns and the most frequent words) and words shorter than three characters are removed. The next step is normalization of orthography, which is simple replacing repeated letters with one, all vocals and the most frequent consonants, such as \textit{s, z, h, m, j} etc, and replacing common shortened words to normal form. We do not touch letters that can be double in Spanish and Catalan: \textit{t, l, r}.  The result is like following: \textit{holaaaaaaa} is converted to \textit{hola}. We also replace all letters with diacritics with simple ones to reduce the number of tokens in the TF-IDF way of vectorization.
+\subsection{SVM+TF-IDF}\label{sec:tf-idf+svm}
 
-\subsection{TF-IDF+SVM}\label{sec:tf-idf+svm}
+\textbf{TF-IDF} (Term Frequency times Inverse Document Frequency) \cite{Jones72astatistical} is a weighting scheme broadly used in many tasks. Its goal is to reduce the impact of words that occur too frequently in a given corpus TF-IDF is the product of two statistic metrics, term frequency and inverse document frequency.
+We calculate the TF-IDF scores for all pre-processed unigrams in the training corpus. The number of features equals the size of the vocabulary of the dataset and represents the dimensionality of the document vector.
 
-The first experimental setup uses a TF-IDF (Term Frequency times Inverse Document Frequency) \cite{Jones72astatistical} representation of features extracted from the corpus. This approach is similar to bag-of-words where instead of word frequency the TF-IDF measure is used.
+\textbf{Information Gain} is used for feature selection \cite{Cover:2006:EIT:1146355}. In machine learning, Information Gain provides a method to calculate the mutual information between the features and the classification labels. According to \cite{Aggarwal12}, mutual information is defined on the basis of the level co-occurrence between the label and word. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. The Information Gain scores show how common is a specific feature in a target class, for example, those words that occur mainly in tweets labelled as FAVOR will be highly ranked. All the weights are normalized and the features ranked from one to zero. We then select those features that are larger than zero.
 
-TF-IDF weighting scheme is broadly used for document and text classification, information retrieval and topic modelling. The goal of using of TF-IDF measure is to reduce the impact of words that occur too frequently in a given corpus as they are less informative than features that occur in a small part of the training corpus. The TF-IDF is the product of two statistic metrics, term frequency  and inverse document frequency.
+\textbf{Grid Search} is performed for hyper-parameter optimisation. The grid-search results are measured by 5-fold cross-validation on the training set. To reduce the cost of the grid-search process, we select two of the SVM (RBF kernel) parameters, namely, C and gamma.
 
-We calculate the TF-IDF scores for all unigrams in the training corpus. The number of features equals the size of the vocabulary of the dataset and represents the dimensionality of the document vector. It is extremely sparse, since the documents contains about 20-30 words. So, our task is to reduce the dimensionality of the vector.
+\subsection{SVM+FastText Embeddings}\label{sec:svm+f-embedd}
 
-We use the Information Gain method for feature selection, which is a term from information theory \cite{Cover:2006:EIT:1146355}. In machine learning, this measure provides a way to calculate the mutual information between the features and the classification classes. According to \cite{Aggarwal12}, mutual information defined on the basis of the level of co-occurrence between the class and word. In other words, it represents the predictive power of each feature, and measures the number of bits of information obtained for prediction of a class in terms of presence or absence of a feature in a document. It is a filter method that selects features by ranking them with correlation coefficients \cite{guyon03}. The information gain scores show how common is the feature in a target class, for example the words that occurs mainly in tweets labelled as FAVOR stance and almost never in AGAINST stance, are very informative and ranked highly. All the weights are normalized and all the features ranked from one to zero. We then select those features that are scored larger than zero.
+Word embeddings encode words as continuous real-valued representations in a low dimensional space. Word embeddings are trained over large corpora and are able to capture semantic and syntactic similarities based on co-ocurrences. Word embeddings allow to build rich representations of text and have enabled improvements across most NLP tasks.
 
-We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem.
-
-We perform hyper-parameter optimisation by grid-search  estimated by performance metrics, accuracy, precision, and recall and measured by 5-fold cross-validation on the training set. To reduce the cost of the grid-search process, we select two parameters of SVM classifier only, C and gamma.  The kernel is RBF.  In total, there were 121 combination of the parameters. After  selecting  the  best  parameters  we  estimate  the  classification  models  via  10-fold
-cross-validation.  For the English data, we train five models according to the target and calculate the average for each metric.  We obtain the following results for the best models selected according to the cross validation F1 score
-
-In this part is explained the second approach where we use word vector representations for the tweets, or tweet embeddings as features and SVM classifier.
-
-Vector representations of words, characters or documents, also known as "embeddings" is a technique for creating language models in continuous real valued representations. This approach requires a big amount of textual data to make these embeddings representative. We use pre-trained models FastText \cite{joulin-etal-2017-bag}, they trained over large corpora and are able to capture semantic and syntactic similarities based on co-ocurrences.
-
-Since Catalan is a less-resourced language, there are not so many NLP resources for its processing. However, FastText provide word vector models trained on Common Crawl\footnote{http://commoncrawl.org/} and Wikipedia corpora using a Continuous Bag-of-Words (CBOW) architecture with position-weights and 300 dimensions. The FastText models for Spanish, Catalan and English based on Common Crawl contain around 2 million words each. In order to produce vectors for out-of-vocabulary words, such as proper names and misspelled words, FastText word vectors are built from vectors of substrings of characters which are character n-grams of length 5, a window of size 5 and 10 negatives \cite{Grave18}. In order to do so, FastText averages the vector representation of its character n-grams. However, it fails in vectorizing totally non-grammatical entities that the model has never seen. It means that the accurate pre-processing of the text is important.
-
-We propose to represent a tweet as an average value of the vectors of the words from a given tweet. We are aware of that this method has some limitations. It discards the word order and sentence semantics. However, according to previous work, "averaging the embeddings of words in a sentence has proven to be a surprisingly successful and efficient way of obtaining sentence embeddings" \cite{DBLP:journals/corr/KenterBR16}. A similar approach has been used in various tasks such as sentiment analysis \cite{Anselmo17,socher-etal-2013-recursive} and sentence2vec representation \cite{Ben-Lhachemi18,DBLP:journals/corr/PagliardiniGJ17}. The average tweet vector representation is calculated as following:
+To the best of our knowledge, the only publicly available pre-trained models for both Catalan and Spanish are those distributed by FastText \cite{Grave18}. Initial experimentation showed that the Common Crawl\footnote{http://commoncrawl.org/} models performed better for our particular task. The Common Crawl models are trained using a Continuous Bag-of-Words (CBOW) architecture with position-weights and 300 dimensions on a vocabulary of 2M words. In order to produce vectors for out-of-vocabulary words, FastText word embeddings are trained with character n-grams of length 5, and a window of size 5 and 10 negatives \cite{Grave18}. We represent the tweet as the average of the word vectors \cite{DBLP:journals/corr/KenterBR16}. The averaged vector representation for a given tweet is calculated as follows:
 
 \[V(t)=\frac{1}{n}\sum_{i=1}^{n}W_{i}\]
 
-where
+where \textit{V(t)} is the vector representing a tweet, \textit{n} is the number of words and \textit{W} the vector for each word. In order to facilitate the look-up into the pre-trained word embedding model, the pre-processing described in the previous section is modified to leave untouched the diacritics and the stopwords.
 
-\textit{V(t)} is a vector of a tweet,
+\subsection{FastText System}\label{sec:fasttext-system}
 
-\textit{n} is a number of words in a tweet,
 
-\textit{W} is a word vector.
-
-The FastText model is loaded using the Gensim library \cite{rehurek_lrec}. To calculate a tweet vector, we coded a simple function which first assigns a vector to each token in a tweet, skipping non-processable entities, and calculate the average vector for the tweet. It returns a document-feature matrix with 300 features.
-
-Since the words in the vocabulary of the model are from real world texts, Wikipedia and news, they are well spelled, hence we change the text pre-processing method: we do not replace diacritics and stopwords. We remove punctuation, numbers, mentions, links and RTs as well.
 
 \subsection{Neural Architecture}\label{sec:neural-architecture}
 
@@ -161,6 +140,8 @@ The organizers of SemEval 2016 and IberEval 2018 used the macro-average score of
 The same metric to evaluate the performance when testing of the experiments is applied.
 
 \section{TW-1O Referendum Dataset}\label{sec:tw1o_dataset}
+
+We train a classification model via 10-fold cross validation on the training set using the LibSVM learner \cite{Fan2005} implemented in RapidMiner. The LibSVM learner allows to apply SVM algorithm for a multiclass problem.
 
 The dataset in Catalan and Spanish, called TW-1O Referendum Dataset, is created by \cite{taule18} and first presented in IberEval shared task in 2018, it contains a collection of Tweets in Spanish and Catalan languages. It is annotated with stance towards the referendum about the self determination of Catalonia region in 2017.
 
@@ -226,7 +207,7 @@ Flair+FTEmb & 60.23 & 52.44 & 56.34 \\ \hline
 SVM+TF-IDF & 22.86 & 94.68 & \textbf{58.77} \\
 SVM+FTEmb & 0.00 & 93.88 & 46.94 \\
 FastText+FTEmb & 12.90 & 94.60 & 53.78 \\
-Flair+FTEmb & 0.04 & 94.11 & 47.07 \\ \hline
+Flair+FTEmb & 14.79 & 94.40 & 54.59 \\ \hline
 \textbf{Baseline} \\
 \scriptsize{\cite{Cuquerella2018CriCaTM}} & - & - & 30.68 \\  \hline
 \end{tabular}
