@@ -31,38 +31,35 @@ german.rigau@ehu.eus}
 
 \section{Introduction}
 
-Automatic stance detection is the task of classifying the attitude expressed in a text towards a given target. Nowadays, it is a rapidly growing area of natural language processing since more and more opinion-rich textual resources such as online review sites, personal blogs and social media are available. The research on this topic is conducted mainly on the datasets in English \cite{mohammad-etal-2016-semeval,augenstein-etal-2016-stance}.  When speaking about stance detection in Twitter we usually refer to text documents like following:
+The rise of social media has given rise to the ``fake news'' phenomenon. According to the Fake News Challenge, ``Fake news, defined by the New York Times as ``a made-up story with an intention to deceive''\footnote{\url{https://www.nytimes.com/2016/12/06/us/fake-news-partisan-republican-democrat.html}}, often for a secondary gain, is arguably one of the most serious challenges facing the news industry today.''\footnote{\url{http://www.fakenewschallenge.org/}}
 
+Determining the veracity of a given document or story, namely, whether it is fake or legitimate, is a very complex task, even for expert fact-checkers. Thus, previous work breaks down the fake news detection task in different stages, the first of which is establishing what other news sources are saying about the given document or story (whether they agree, disagree, etc. with the news story), namely, determining their stance with respect to that document or news story. Following this, the first stage of the Fake News Challenge was \emph{Stance Detection}. This decision was supported by two main ideas: (i) a stance detection system should allow a human fact checker to enter a document (headline, message, claim, etc.) and retrieve the top documents from other news sources that agree, disagree or discuss the given document and, (ii) based on the previous step, it would be possible to build a ``truth-labeling'' system based on the weighted credibility of the various news organizations from which the stance has been retrieved.
+
+Automatic stance detection has been defined as the task of classifying the attitude expressed in a text towards a given target or claim. Most of the work on stance detection has been undertaken in English using the data provided by the Detecting Stance in Tweets shared task organized at SemEval 2016 \cite{mohammad-etal-2016-semeval}, RumourEval 2017 \cite{derczynski-etal-2017-semeval} and the Fake News Challenge. The SemEval 2016 task was formulated as follows: given a tweet text and a target entity or topic, automatic natural language systems must determine whether the tweet expresses a stance in \textbf{favor} of the given target, \textbf{against} the given target, or whether \textbf{none} of thoses inference are likely. For example, consider the following target$-$tweet pairs:
 
 \begin{quote}
-Tweet: \textit{I still remember the days when I prayed God for strength.. then suddenly God gave me difficulties to make me strong. Thank you God! \#SemST}
+\textbf{Tweet:} \textit{I still remember the days when I prayed God for strength.. then suddenly God gave me difficulties to make me strong. Thank you God! \#SemST}
 
-Target: Atheism
+\textbf{Target:} Atheism
 
-Stance: AGAINST
+\textbf{Stance:} AGAINST
 
-Tweet: \textit{@PH4NT4M @MarcusChoOo @CheyenneWYN women. The term is women. Misogynist! \#SemST}
+\vspace{0.5cm}
 
-Target: Feminist Movement
+\textbf{Tweet:} \textit{@PH4NT4M @MarcusChoOo @CheyenneWYN women. The term is women. Misogynist! \#SemST}
 
-Stance: FAVOR
+\textbf{Target:} Feminist Movement
+
+\textbf{Stance:} FAVOR
 \end{quote}
 
-This is an example from Stance dataset presented in 2016 by \cite{Mohammad2016ADF} which illustrates that a tweet is very short, full of specific vocabulary, rthographic mistakes and non-grammatical phrases, emojis, hashtags, links, pieces of irony and sarcasm.
+These examples illustrate the nature of the task, in which tweets are very short, full of specific vocabulary, non-standard spelling grammar, emojis, hashtags, and high on irony and sarcasm.
 
-Our main aim was to build a robust multilingual stance detection system using machine learning techniques. The process of system building requires well developed and balanced datasets. There is still lack of textual resources of high quality for cross-lingual automatic systems. We started with the experiments with existing dataset in Spanish and Catalan \cite{taule18} and one of the problems we met was unbalanced training data which caused impossibility of detecting stance in short texts. The corpus in Catalan almost no contained AGAINST stance. In order to solve the problem, we build a dataset with similar characteristics, based on Twitter messages, in Catalan and Spanish languages.
+Following the model of the SemEval 2016 initiative, two shared tasks were organized as part of IberEval workshop \cite{taule17,taule18}. They provided tweets annotated for Stance in Catalan and Spanish. The target of the 2017 edition was the ``Catalan Independence'' whereas the 2018 edition (TW-10 dataset) focused on the ``Catalan referendum on the 1st of october''. In both editions the classes distribution was hugely skewed, which makes it difficult to explore and compare stance detection methods in multilingual and cross-lingual settings.
 
-The contributions of this paper are the following:
+In this context, we propose the new Catalan Independence Corpus (CIC) for stance detection in Catalan and Spanish. By doing so, we aim to promote monolingual research in other languages different to English. Furthermore, the corpus presents a balanced distribution between classes so that researchers can explore multilingual and cross-lingual methods.
 
-\begin{itemize}
-\item we present a new dataset to work on multilingual stance detection and explore cross-lingual approaches in future and explain semi-automatic methodology of collecting and annotating a dataset consisting of tweets(see Section \ref{sec:independence});
-
-\item we propose approaches in stance detection systems that show state-of-the-art results on existing benchmark (see Section \ref{sec:experiment} and \ref{sec:tw1o_dataset});
-
-\item we contribute both the code and the dataset to facilitate reproducibility of results future research on multilingual stance detection. All the data is available ...
-\end{itemize}
-
-\todo{link to the dataset and the scripts}
+The contributions of this paper are the following: (i) we present a new dataset in Catalan and Spanish to work on multilingual and cross-lingual stance detection; (ii) we propose a semi-automatic method to collect and annotate a corpus of tweets based on a categorization of Twitter users. This method partially alleviates the huge effort of manually annotating the corpus tweet by tweet; (iii) we report new state-of-the-art results on the TW-10 dataset of IberEval 2018 \cite{taule18}; (iv) comparison between results using our new corpus and the TW-10 dataset shows the benefits of providing a balanced multilingual corpus, and (v) both the datasets and code are made public to facilitate future research and reproducibility of results\footnote{\url{https://github.com/ixa-ehu/catalonia-independence-dataset}}.
 
 \section{Related Work}\label{sec_related_work}
 
