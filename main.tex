@@ -355,6 +355,31 @@ Flair+FTEmb & 61.76 & 54.84 & 58.29 \\ \hline
 
 It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) and Spanish (Table \ref{tab:result_indep_es}) are higher across languages and systems than those obtained on the TW-10 dataset. This means that the semi-automatic method for the annotation of tweets presented in this paper is quite effective and provides good quality annotated data. Furthermore, there is a consistency in the behaviour of the systems across both languages, which allows to compare their performance in multilingual settings. These results are also consistent with the TW-1O Spanish subset, where the FastText+FTEmb system also obtained the best scores. Finally, the deep learning approach from Flair seems to lag behind linear classifiers. While a bit surprising, this is also coherent with the results obtained in English with the SemEval 2016 dataset, as explained in the Related Work section. Our hypothesis is that the short length of the tweets make it more difficult to generate good contextual-based word representations. However, further experimentation is required to clarify this issue.
 
+\subsection{Error analysis}\label{sec:error}
+
+Three of our experts manually examined samples of 100 tweets from both Catalan and Spanish datasets to check if the annotation error of the semi-automatic is high. According to our intuition, there are some annotation errors and errors of filtering with automatic language detection systems, in total the amount of errors is not higher than 15\% . Here is some examples of "difficult" tweets where the human annotators were disagree with the automatic annotation.    
+
+\begin{quote}
+Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD
+
+\textbf{Our method:} NEUTRAL
+
+\textbf{Annotator:} AGAINST
+\end{quote}
+
+
+\begin{quote}
+@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa
+
+\textbf{Our method:} AGAINST
+
+\textbf{Annotator:} FAVOR
+\end{quote}
+
+We should also mention that manual annotation of texts which express stance is difficult for humans, because in this situation we deal with opinion about an opinion, annotator's background knowledge and intuition. Besides, annotating tweets one by one, experts detect lack of context. Usually, in this kind of tasks, the annotators' disagreement rate is high. 
+
+Although there is an annotation error, out method permits collect large datasets without expensive manual effort. 
+
 %\section{Discussion}\label{sec:discussion}
 
 % With respect to Spanish, After revising the confusion matrix and some wrong predictions, we can conclude that the most common errors for the Spanish models are due to the true AGAINST class being predicted as FAVOR. In Catalan, AGAINST is often predicted as FAVOR or NEUTRAL because the algorithm is highly biased towards the majority class (FAVOR), and the minority class (AGAINST) is misclassified. As each tweet in this dataset was given in the context with the previous and the next tweet, the errors occur in the documents where code-switching or changing of topic is observed. Short documents with one or two tokens after pre-processing are likely to be misclassified, too.
