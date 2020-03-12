@@ -357,28 +357,39 @@ It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) 
 
 \subsection{Error analysis}\label{sec:error}
 
-Three of our experts manually examined samples of 100 tweets from both Catalan and Spanish datasets to check if the annotation error of the semi-automatic is high. According to our intuition, there are some annotation errors and errors of filtering with automatic language detection systems, in total the amount of errors is not higher than 15\% . Here is some examples of "difficult" tweets where the human annotators were disagree with the automatic annotation.    
+In order to make qualitative analysis of the dataset and compare our annotation method with manual annotation, we decided to revise samples of 100 tweets from both Catalan and Spanish training subsets. Three of our experts manually examined the samples to check if the annotation error of proposed system is high. In the majority of the cases, the annotations coincide. Nevertheless, we detected the following issues. 
+
+\textbf{Annotation disagreement} between the proposed system and human annotators. We identified some tweets with controversial annotations, moreover these cases provoked discussions between the annotators, too. We consider these cases to be "difficult" for various reasons such as lack of context, irony, subjectivity of the interpretation of the meaning of the message. 
+
+Here is some examples of "difficult" tweets where the human annotators were disagree with the automatic annotation and also between each other. We can see that in the Tweet 1 is ironical, criticizing the president of Catalonia but using typical pro-independence hashtags and words. Also, Tweet 2 may be interpreted as a statement both in favor or against the topic, depending on the context, and it is not possible detect the context from one tweet. 
 
 \begin{quote}
-Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD
+\textbf{Tweet 1:} @OscarJugon Todav\'ia recuerdo la noche del 1O al President Puigdemont recorriendo los hospitales de toda Catalunya visitando a los m\'as de 1000 heridos. Porque fue as\'i, \textquestiondown no? \#JuicioProc\'es
 
-\textbf{Our method:} NEUTRAL
+\textbf{Our method:} AGAINST
 
-\textbf{Annotator:} AGAINST
+\textbf{Annotator:} FAVOR and AGAINST
+
+\textbf{Translation:} @OscarJugon I still remember the 1O night when President Puigdemont was going to the hospitals of all Catalonia  visiting more than 1000 wounded persons. Because it was like that, wasn't it? \#JuicioProc\'es
 \end{quote}
 
 
 \begin{quote}
-@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa
+\textbf{Tweet 2:} @unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa
 
 \textbf{Our method:} AGAINST
 
 \textbf{Annotator:} FAVOR
+
+\textbf{Translation:} @unprecisionman @jordisalvia When the lawyer asked about certain contradictions in a particular incident, Millo had explained, the judge said that this was not relevant for the cause.
+
 \end{quote}
 
-We should also mention that manual annotation of texts which express stance is difficult for humans, because in this situation we deal with opinion about an opinion, annotator's background knowledge and intuition. Besides, annotating tweets one by one, experts detect lack of context. Usually, in this kind of tasks, the annotators' disagreement rate is high. 
+We should also mention that manual annotation of texts which express stance is difficult for humans, because in this situation we deal with opinion about an opinion, annotator's background knowledge and intuition. Besides, annotating tweets one by one, experts detect lack of context. Usually, in this kind of tasks, the annotators' disagreement rate is also high.
 
-Although there is an annotation error, out method permits collect large datasets without expensive manual effort. 
+There are more conflictive tweets in Catalan dataset than in Spanish one. 
+
+\textbf{Automatic language detection error.} There are some tweets in Spanish dataset that are written in Catalan and vise versa. In Spanish dataset we also observe tweets in Portuguese. These is possible because of the similarity of the languages. 
 
 %\section{Discussion}\label{sec:discussion}
 
