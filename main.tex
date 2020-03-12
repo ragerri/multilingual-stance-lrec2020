@@ -59,7 +59,7 @@ Following the model of the SemEval 2016 initiative, two shared tasks were organi
 
 In this context, we propose the new Catalan Independence Corpus (CIC) for stance detection in Catalan and Spanish. By doing so, we aim to promote research in other languages different to English. Furthermore, the corpus presents a balanced distribution between classes so that researchers can explore multilingual and cross-lingual methods.
 
-The contributions of this paper are the following: (i) we present a new dataset in Catalan and Spanish to work on multilingual and cross-lingual stance detection; (ii) we propose a semi-automatic method to collect and annotate a corpus of tweets based on a categorization of Twitter users. This method partially alleviates the huge effort of manually annotating the corpus tweet by tweet; (iii) we report new state-of-the-art results on the TW-10 dataset of IberEval 2018 \cite{taule18}; (iv) comparison between results using our new corpus and the TW-10 dataset shows the benefits of providing a balanced multilingual corpus, and (v) both the datasets and code are made public to facilitate future research and reproducibility of results\footnote{\url{https://github.com/ixa-ehu/catalonia-independence-dataset}}.
+The contributions of this paper are the following: (i) we present a new dataset in Catalan and Spanish to work on multilingual and cross-lingual stance detection; (ii) we propose a semi-automatic method to collect and annotate a corpus of tweets based on a categorization of Twitter users. This method partially alleviates the huge effort of manually annotating the corpus tweet by tweet; (iii) we report new state-of-the-art results on the TW-10 dataset of IberEval 2018 \cite{taule18}; (iv) comparison between results using our new corpus and the TW-10 dataset shows the benefits of providing a balanced multilingual corpus, and (v) both the datasets and code are made public to facilitate future research and reproducibility of results\footnote{\url{https://github.com/ixa-ehu/catalonia-independence-corpus}}.
 
 \section{Related Work}\label{sec_related_work}
 
@@ -355,30 +355,37 @@ Flair+FTEmb & 61.76 & 54.84 & 58.29 \\ \hline
 
 It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) and Spanish (Table \ref{tab:result_indep_es}) are higher across languages and systems than those obtained on the TW-10 dataset. This means that the semi-automatic method for the annotation of tweets presented in this paper is quite effective and provides good quality annotated data. Furthermore, there is a consistency in the behaviour of the systems across both languages, which allows to compare their performance in multilingual settings. These results are also consistent with the TW-1O Spanish subset, where the fastText+FTEmb system also obtained the best scores. Finally, the deep learning approach from Flair seems to lag behind linear classifiers. While a bit surprising, this is also coherent with the results obtained in English with the SemEval 2016 dataset, as explained in the Related Work section. Our hypothesis is that the short length of the tweets make it more difficult to generate good contextual-based word representations. However, further experimentation is required to clarify this issue.
 
-\subsection{Error Analysis}\label{sec:error}
+\section{Error Analysis}\label{sec:error}
 
-Three of our experts manually examined samples of 100 tweets from both Catalan and Spanish datasets to check if the annotation error of the semi-automatic is high. According to our intuition, there are some annotation errors and errors of filtering with automatic language detection systems, in total the amount of errors is not higher than 15\% . Here is some examples of "difficult" tweets where the human annotators were disagree with the automatic annotation.    
+In order to perform an analysis of the quality of the annotations obtained by our semi-automatic method (as described in Section \ref{sec:independence}), we took a sample of 100 tweets per language from the training sets. This sample was manually revised by three human annotators. We found out that the error rate in the Spanish sample was around 5\%, whereas for the Catalan sample was slightly higher, around 15\%. It should be noted that those error rates are approximate because the three human annotators found it very difficult to agree on their correct annotation. This was due to several reasons. First, the meaning of the tweets is usually underspecified. Second, many tweets use figurative language such as sarcasm and irony. Finally other tweets referred to the topic in a indirect manner. Below can be found a couple of examples of contentious tweets in which it is not really clear which of the annotations are the correct one, namely, the one provided by our method (semi-automatic user-based) or the manual one.
 
 \begin{quote}
-Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD
+\textbf{Tweet:} \emph{Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD}
 
 \textbf{Our method:} NEUTRAL
 
-\textbf{Annotator:} AGAINST
+\textbf{Manual annotation:} AGAINST/NONE?
+
+\textbf{Language:} Spanish
+
+\textbf{Translation:} \emph{Arrimadas will go to Waterloo this Sunday to remind Puigdemont that the republic does not exist.}
 \end{quote}
 
 
 \begin{quote}
-@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa
+\textbf{Tweet:} \emph{@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa}
 
 \textbf{Our method:} AGAINST
 
-\textbf{Annotator:} FAVOR
+\textbf{Manual annotation:} FAVOR/NONE?
+
+\textbf{Language:} Catalan
+
+\textbf{Translation:} \emph{When the lawyer asked him about certain contradictions with respect to a specific incident which Millo had explained, the judge said that it was not relevant.}
+
 \end{quote}
 
-We should also mention that manual annotation of texts which express stance is difficult for humans, because in this situation we deal with opinion about an opinion, annotator's background knowledge and intuition. Besides, annotating tweets one by one, experts detect lack of context. Usually, in this kind of tasks, the annotators' disagreement rate is high. 
-
-Although there is an annotation error, out method permits collect large datasets without expensive manual effort. 
+Manual annotation of stance in tweets is a difficult task for humans, partly because it depends greatly on the annotator's background knowledge and intuition. Furthermore, annotating tweets one by one, as opposed to user-based annotation, albeit automatic, suffers from a lack of context.
 
 %\section{Discussion}\label{sec:discussion}
 
@@ -410,7 +417,7 @@ In this paper we provide a new dataset for stance detection in Catalan and Spani
 
 Additionally, we establish new state-of-the-art results on the TW-1O dataset for both Catalan and Spanish. Our hypothesis to explain the large difference with previous work is the more exhaustive pre-processing performed, apart from the use of the fastText word embeddings to obtain the tweets representation. The results also show the superior performance of the fastText linear classifier over SVM or RNN approaches on both datasets. These results are somewhat similar to those obtain for English with the SemEval 2016 data, where linear classifiers still are competitive or outperform newer deep learning approaches.
 
-We publicly distribute the datasets and code to facilitate further multilingual and cross-lingual research on stance detection.
+We publicly distribute the datasets and code to facilitate further multilingual and cross-lingual research on stance detection\footnote{\url{https://github.com/ixa-ehu/catalonia-independence-corpus}}.
 
 \section{Acknowledgements}\label{sec:acknoledgements}
 
