@@ -357,27 +357,27 @@ It is clear that the results for both Catalan (Table \ref{tab:result_indep_ca}) 
 
 \section{Error Analysis}\label{sec:error}
 
-In order to perform an analysis of the quality of the annotations obtained by our semi-automatic method (as described in Section \ref{sec:independence}), we took a sample of 100 tweets per language from the training sets. This sample was manually revised by three human annotators. We found out that the error rate in the Spanish sample was around 5\%, whereas for the Catalan sample was slightly higher, around 15\%. It should be noted that those error rates are approximate because the three human annotators found it very difficult to agree on their correct annotation. This was due to several reasons. First, the meaning of the tweets is usually underspecified. Second, many tweets use figurative language such as sarcasm and irony. Finally other tweets referred to the topic in a indirect manner. Below can be found a couple of examples of contentious tweets in which it is not really clear which of the annotations are the correct one, namely, the one provided by our method (semi-automatic user-based) or the manual one.
+In order to perform an analysis of the quality of the annotations obtained by our semi-automatic method (as described in Section \ref{sec:independence}), we took a sample of 100 tweets per language from the training sets. This sample was manually revised by three human annotators. We found out that the error rate in the Spanish sample was around 5\%, whereas for the Catalan sample was slightly higher, around 15\%. It should be noted that those error rates are approximate because the three human annotators found it very difficult to agree on their correct annotation. This was due to several reasons. First, the meaning of the tweets is usually underspecified. Second, many tweets use figurative language such as sarcasm and irony. Finally other tweets referred to the topic in a indirect manner. Below can be found a couple of examples of contentious tweets in which it is not really clear which of the annotations are the correct one, namely, the one provided by our method (semi-automatic user-based) or the manual one. In Tweet 1, we can see a neutral message, but the author uses anti-independence slogan. In Tweet 2, although it seems to be neutral, the interpretation depends on the context of the message, where the annotator should know the details of the case. 
 
 \begin{quote}
-\textbf{Tweet:} \emph{Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD}
+\textbf{Tweet 1:} \emph{Arrimadas ir\'a a Waterloo este domingo para recordar a Puigdemont que  la rep\'ublica no existe  https://t.co/6luAEAj2UD}
 
 \textbf{Our method:} NEUTRAL
 
-\textbf{Manual annotation:} AGAINST/NONE?
+\textbf{Manual annotation:} AGAINST/NEUTRAL
 
 \textbf{Language:} Spanish
 
-\textbf{Translation:} \emph{Arrimadas will go to Waterloo this Sunday to remind Puigdemont that the republic does not exist.}
+\textbf{Translation:} \emph{Arrimadas will go to Waterloo this Sunday to remind Puigdemont that the republic does not exist https://t.co/6luAEAj2UD}
 \end{quote}
 
 
 \begin{quote}
-\textbf{Tweet:} \emph{@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa}
+\textbf{Tweet 2:} \emph{@unprecisionman @jordisalvia Quan l'advocat preguntava sobre certes contradiccions d'un incident concret q havia explicat el Millo, el jutge ha dit q aix\`o no era rellevant per la causa}
 
 \textbf{Our method:} AGAINST
 
-\textbf{Manual annotation:} FAVOR/NONE?
+\textbf{Manual annotation:} FAVOR/NEUTRAL
 
 \textbf{Language:} Catalan
 
